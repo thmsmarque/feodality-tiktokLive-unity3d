@@ -104,4 +104,71 @@ public class GameManagerScript : MonoBehaviour
         this.updateFoodNeeded();
         
     }
+
+    
+    public void positionFood()
+    {
+        villagersList.Sort(new IComparerEfficacity());
+        float nbVillagers = (float)villagersList.Size();
+        int huitieme = (int)(nbVillagers*0.8f);
+        int dix = (int)(nbVillagers*0.1f);
+
+        for(int i = 0; i<huitieme; i++)
+        {
+            //Set une activité type bouffe
+        }
+        for(int i = huitieme; i< huitieme+dix; i++)
+        {
+            //Set activité type materials
+        }
+        for(int i = huitieme + dix; i< huitieme + 2*dix; i++)
+        {
+            //Set défense
+        }
+
+
+
+    }
+
+    public void positionMaterials()
+    {
+        villagersList.Sort(new IComparerEfficacity());
+        float nbVillagers = (float)villagersList.Size();
+        int huitieme = (int)(nbVillagers*0.8f);
+        int dix = (int)(nbVillagers*0.1f);
+
+        for(int i = 0; i<huitieme; i++)
+        {
+            //Set une activité type materials
+        }
+        for(int i = huitieme; i< huitieme+dix; i++)
+        {
+            //Set activité type bouffe
+        }
+        for(int i = huitieme + dix; i< huitieme + 2*dix; i++)
+        {
+            //Set défense
+        }
+    }
+
+    public void positionDefense()
+    {
+        villagersList.Sort(new IComparerEfficacity());
+        float nbVillagers = (float)villagersList.Size();
+        int huitieme = (int)(nbVillagers*0.8f);
+        int dix = (int)(nbVillagers*0.1f);
+
+        for(int i = 0; i<huitieme; i++)
+        {
+            //Set une activité type défense
+        }
+        for(int i = huitieme; i< huitieme+dix; i++)
+        {
+            //Set activité type bouffe
+        }
+        for(int i = huitieme + dix; i< huitieme + 2*dix; i++)
+        {
+            //Set materials
+        }
+    }
 }
