@@ -6,10 +6,13 @@ public class GameManagerScript : MonoBehaviour
 {
     public List<VillagerScript> playersOnBoard;
     public List<ActivityTemplate> activities;
+    public List<VillagerScript> VillagersSelected;
+
     public float foodQuantity;
     public float foodNeeded;
     public float materials;
     public float marginFood = 0.25f;
+    public float multiplierFoodNeededByStrongness = 0.1f;
 
     enum FOOD_STATE
     {
@@ -30,6 +33,34 @@ public class GameManagerScript : MonoBehaviour
     private void Update()
     {
         StartCoroutine(react());    
+        handleSelectionByClick();
+
+    }
+
+    void handleSelectionByClick()
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if(Physics.RayCast(ray, out hit)))
+            {
+                if(hit.GameObject.CompareWithTag("Villager"))
+                {
+                       VillagerScript vi = hit.GameObject.GetComponent<VillagerScript>();
+                       if(VillagersSelected.Contains(vi))
+                       {
+                            VillagersSelected.Remove(vi);
+                            vi.deselectVillager();
+                            
+                       }else
+                       {
+                            VillagersSelected.Add(vi);
+                            vi.selectVillager();
+                       }
+                }
+            }
+        }
     }
 
     IEnumerator react()
@@ -76,7 +107,7 @@ public class GameManagerScript : MonoBehaviour
         float foodneed = 0;
         foreach(VillagerScript g in playersOnBoard)
         {
-            foodneed += 1f + g.getStrongness() * 0.3f;
+            foodneed += 1f + g.getStrongness() * multiplierFoodNeededByStrongness;
         }
         this.foodNeeded = foodneed;
         this.updateFoodState();

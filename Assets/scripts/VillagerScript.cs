@@ -21,10 +21,25 @@ public class VillagerScript : MonoBehaviour
     public long idPlayer;
     public int numberOfLikes;
 
+    public bool isSelected;
+
     // Start is called before the first frame update
     void Start()
     {
         actualActivity = null;
+        isSelected = true;
+    }
+
+    public void selectVillager()
+    {
+        isSelected = true;
+        //Activer effet selection
+    }
+
+    public void deselectVillager()
+    {
+        isSelected = false;
+        //Desactivier effet selection
     }
 
  
