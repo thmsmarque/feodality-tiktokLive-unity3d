@@ -14,7 +14,8 @@ public class ActivityTemplate : ScriptableObject
     public string name;
     public TYPE activityType;
     public GameObject prefab;
-    public List<VillagerScript> villagersList;
+    public List<VillagerScript> villagersList = new List<VillagerScript>();
+    public int capacity;
 
     public void react()
     {
@@ -60,4 +61,26 @@ public class ActivityTemplate : ScriptableObject
     {
         return villagersList;
     }
+
+    public bool isFoodActivity()
+    {
+        return activityType == TYPE.FOOD;
+    }
+    public bool isMaterialsActivity()
+    {
+        return activityType == TYPE.MATERIALS;
+    }
+    public bool isDefenseActivity()
+    {
+        return TYPE.DEFENSE == activityType;
+    }
+    public bool isRestingActivity()
+    {
+        return TYPE.RESTING == activityType;
+    }
+    public bool isTrainingActivity()
+    {
+        return TYPE.RESTING == activityType;
+    }
+
 }

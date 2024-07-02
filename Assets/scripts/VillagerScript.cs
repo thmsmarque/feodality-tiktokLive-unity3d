@@ -5,7 +5,7 @@ using UnityEngine;
 public class VillagerScript : MonoBehaviour
 {
     [SerializeField]
-    ActivityTemplate actualActivity, favoriteActivity;
+    ActivityTemplate actualActivity;
 
     /// <summary>
     /// How strong he is
@@ -25,7 +25,6 @@ public class VillagerScript : MonoBehaviour
     void Start()
     {
         actualActivity = null;
-        favoriteActivity = null;
     }
 
  
@@ -35,27 +34,22 @@ public class VillagerScript : MonoBehaviour
     /// <param name="ac">new actual activiy</param>
     public void changeActualActivity(ActivityTemplate ac)
     {
+        if(actualActivity != null)
+        {
+            actualActivity.removeVillager(this);
+        }
         this.actualActivity = ac;
+        ac.addVillager(this);
     }
 
-    /// <summary>
-    /// Change the favorite activity
-    /// </summary>
-    /// <param name="fav">new favorite activity</param>
-    public void changeFavoriteActitvy(ActivityTemplate fav)
-    {
-        this.favoriteActivity = fav;
-    }
+    
 
-    public ActivityTemplate getFavoriteActivity()
-    {
-        return favoriteActivity;
-    }
 
     public ActivityTemplate getActualActivity()
     {
         return actualActivity;
     }
+
 
     public void changeStrongness(int st)
     {

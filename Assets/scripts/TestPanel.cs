@@ -4,8 +4,21 @@ using UnityEngine;
 
 public class TestPanel : MonoBehaviour
 {
+    GameObject gm;
+    int numbVillager;
+    private void Start()
+    {
+       gm = GameObject.FindWithTag("GameController");
+       numbVillager = 0;
+    }
     public void apparitionVillager()
     {
-        GameObject.FindWithTag("GameController").GetComponent<GameManagerScript>().addPlayerOnBoard("test",0000);
+        gm.GetComponent<GameManagerScript>().addPlayerOnBoard("test"+numbVillager, 0000);
+        numbVillager++;
+    }
+
+    public void apparitionFood()
+    {
+
     }
 }

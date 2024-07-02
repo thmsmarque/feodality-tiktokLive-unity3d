@@ -21,6 +21,12 @@ public class GameManagerScript : MonoBehaviour
 
     public GameObject playerPrefab;
 
+    private void Start()
+    {
+        playersOnBoard = new List<VillagerScript>();
+        activities = new List<ActivityTemplate>();
+    }
+
     private void Update()
     {
         StartCoroutine(react());    
@@ -105,25 +111,76 @@ public class GameManagerScript : MonoBehaviour
         
     }
 
-    
+    public List<ActivityTemplate> getFoodActivities()
+    {
+        List<ActivityTemplate> foodsActitivies = null;
+        foreach(ActivityTemplate a in activities)
+        {
+            if(a.isFoodActivity())
+            {
+                foodsActitivies.Add(a);
+            }
+        }
+        return foodsActitivies;
+    }
+
+    public List<ActivityTemplate> getMaterialsActivities()
+    {
+        List<ActivityTemplate> materialsActivities = new List<ActivityTemplate>();
+        foreach (ActivityTemplate a in activities)
+        {
+            if (a.isMaterialsActivity())
+            {
+                materialsActivities.Add(a);
+            }
+        }
+        return materialsActivities;
+    }
+
+    public List<ActivityTemplate> getDefenseActivities()
+    {
+        List<ActivityTemplate> defenseActivities = new List<ActivityTemplate>();
+        foreach (ActivityTemplate a in activities)
+        {
+            if (a.isDefenseActivity())
+            {
+                defenseActivities.Add(a);
+            }
+        }
+        return defenseActivities;
+    }
+
+
+
+
+
+
     public void positionFood()
     {
-        villagersList.Sort(new IComparerEfficacity());
-        float nbVillagers = (float)villagersList.Size();
+        playersOnBoard.Sort(new IComparerEfficacity());
+        float nbVillagers = (float)playersOnBoard.Count;
         int huitieme = (int)(nbVillagers*0.8f);
         int dix = (int)(nbVillagers*0.1f);
 
-        for(int i = 0; i<huitieme; i++)
+        List<ActivityTemplate> foodAc = getFoodActivities();
+        List<ActivityTemplate> materialsAc = getMaterialsActivities();
+        List<ActivityTemplate> defAc = getDefenseActivities();
+        System.Random rand = new System.Random();
+        for (int i = 0; i<huitieme; i++)
         {
-            //Set une activité type bouffe
+            int aleaInt = rand.Next(foodAc.Count);
+            playersOnBoard[i].changeActualActivity(foodAc[aleaInt]);
+
         }
         for(int i = huitieme; i< huitieme+dix; i++)
         {
-            //Set activité type materials
+            int aleaInt = rand.Next(materialsAc.Count);
+            playersOnBoard[i].changeActualActivity(materialsAc[aleaInt]);
         }
         for(int i = huitieme + dix; i< huitieme + 2*dix; i++)
         {
-            //Set défense
+            int aleaInt = rand.Next(defAc.Count);
+            playersOnBoard[i].changeActualActivity(defAc[aleaInt]);
         }
 
 
@@ -132,43 +189,60 @@ public class GameManagerScript : MonoBehaviour
 
     public void positionMaterials()
     {
-        villagersList.Sort(new IComparerEfficacity());
-        float nbVillagers = (float)villagersList.Size();
+        playersOnBoard.Sort(new IComparerEfficacity());
+        float nbVillagers = (float)playersOnBoard.Count;
         int huitieme = (int)(nbVillagers*0.8f);
         int dix = (int)(nbVillagers*0.1f);
 
-        for(int i = 0; i<huitieme; i++)
+        List<ActivityTemplate> foodAc = getFoodActivities();
+        List<ActivityTemplate> materialsAc = getMaterialsActivities();
+        List<ActivityTemplate> defAc = getDefenseActivities();
+        System.Random rand = new System.Random();
+
+        for (int i = 0; i < huitieme; i++)
         {
-            //Set une activité type materials
+            int aleaInt = rand.Next(materialsAc.Count);
+            playersOnBoard[i].changeActualActivity(materialsAc[aleaInt]);
+
         }
-        for(int i = huitieme; i< huitieme+dix; i++)
+        for (int i = huitieme; i < huitieme + dix; i++)
         {
-            //Set activité type bouffe
+            int aleaInt = rand.Next(foodAc.Count);
+            playersOnBoard[i].changeActualActivity(foodAc[aleaInt]);
         }
-        for(int i = huitieme + dix; i< huitieme + 2*dix; i++)
+        for (int i = huitieme + dix; i < huitieme + 2 * dix; i++)
         {
-            //Set défense
+            int aleaInt = rand.Next(defAc.Count);
+            playersOnBoard[i].changeActualActivity(defAc[aleaInt]);
         }
     }
 
     public void positionDefense()
     {
-        villagersList.Sort(new IComparerEfficacity());
-        float nbVillagers = (float)villagersList.Size();
+        playersOnBoard.Sort(new IComparerStrongness());
+        float nbVillagers = (float)playersOnBoard.Count;
         int huitieme = (int)(nbVillagers*0.8f);
         int dix = (int)(nbVillagers*0.1f);
 
-        for(int i = 0; i<huitieme; i++)
+        List<ActivityTemplate> foodAc = getFoodActivities();
+        List<ActivityTemplate> materialsAc = getMaterialsActivities();
+        List<ActivityTemplate> defAc = getDefenseActivities();
+        System.Random rand = new System.Random();
+
+        for (int i = 0; i<huitieme; i++)
         {
-            //Set une activité type défense
+            int aleaInt = rand.Next(defAc.Count);
+            playersOnBoard[i].changeActualActivity(defAc[aleaInt]);
         }
         for(int i = huitieme; i< huitieme+dix; i++)
         {
-            //Set activité type bouffe
+            int aleaInt = rand.Next(foodAc.Count);
+            playersOnBoard[i].changeActualActivity(foodAc[aleaInt]);
         }
         for(int i = huitieme + dix; i< huitieme + 2*dix; i++)
         {
-            //Set materials
+            int aleaInt = rand.Next(materialsAc.Count);
+            playersOnBoard[i].changeActualActivity(materialsAc[aleaInt]);
         }
     }
 }
