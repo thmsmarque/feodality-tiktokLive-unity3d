@@ -16,35 +16,6 @@ public class ActivityTemplate : ScriptableObject
     public GameObject prefab;
     public int capacity;
 
-    public void react()
-    {
-        GameManagerScript gm = GameObject.FindWithTag("GameController").GetComponent<GameManagerScript>();
-        switch(activityType)
-        {
-            case TYPE.FOOD:
-                float food = 0;
-                foreach(VillagerScript v in villagersList)
-                {
-                    food += v.getEfficacity();
-                }
-                gm.addFood(food);
-                break;
-            case TYPE.MATERIALS:
-                float materials = 0f;
-                foreach(VillagerScript v in villagersList)
-                {
-                    materials += v.getEfficacity() * 0.1f;
-                }
-                gm.addMaterials(materials);
-                break;
-            case TYPE.DEFENSE: break;
-            case TYPE.TRAINING: 
-
-                break;
-            case TYPE.RESTING: break;
-        }
-    }
-
     
 
     public bool isFoodActivity()

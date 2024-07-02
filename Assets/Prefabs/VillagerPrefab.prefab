@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1894715068346633848}
   m_Layer: 0
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: Villager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 7500780674077307545}
   m_Layer: 0
   m_Name: VillagerPrefab
-  m_TagString: Untagged
+  m_TagString: Villager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -138,7 +138,7 @@ Transform:
   m_Children:
   - {fileID: 7215632492439293783}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7500780674077307545
 MonoBehaviour:
@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actualActivity: {fileID: 0}
-  favoriteActivity: {fileID: 0}
-  name: 
+  nameOfVillager: 
   idPlayer: 0
   numberOfLikes: 0
+  isSelected: 0

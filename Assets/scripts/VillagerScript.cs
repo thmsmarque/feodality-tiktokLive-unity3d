@@ -17,7 +17,7 @@ public class VillagerScript : MonoBehaviour
     float efficacity = 2.5f;
 
 
-    public string name;
+    public string nameOfVillager;
     public long idPlayer;
     public int numberOfLikes;
 
@@ -27,22 +27,25 @@ public class VillagerScript : MonoBehaviour
     void Start()
     {
         actualActivity = null;
-        isSelected = true;
+        isSelected = false;
     }
 
     public void selectVillager()
     {
         isSelected = true;
         //Activer effet selection
+        gameObject.GetComponentInChildren<Renderer>().material.color = Color.red;
     }
 
     public void deselectVillager()
     {
         isSelected = false;
         //Desactivier effet selection
+        gameObject.GetComponentInChildren<Renderer>().material.color = Color.white;
+
     }
 
- 
+
     /// <summary>
     /// Change the actual activity
     /// </summary>
@@ -62,7 +65,11 @@ public class VillagerScript : MonoBehaviour
         actualActivity = null;
     }
 
-    
+    public void trainOneTime()
+    {
+        efficacity += 0.003f;
+        strongness += 0.001f;
+    }
 
 
     public ActivityScript getActualActivity()
@@ -89,5 +96,10 @@ public class VillagerScript : MonoBehaviour
     public float getStrongness()
     {
         return this.strongness;
+    }
+
+    public void setName(string name)
+    {
+        this.nameOfVillager = name;
     }
 }

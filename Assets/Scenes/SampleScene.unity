@@ -333,7 +333,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -880, y: -407.5}
+  m_AnchoredPosition: {x: 879, y: -522}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &245953631
@@ -382,7 +382,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1511237103}
         m_TargetAssemblyTypeName: TestPanel, Assembly-CSharp
-        m_MethodName: apparitionVillager
+        m_MethodName: priorDefense
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -516,7 +516,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1511237103}
         m_TargetAssemblyTypeName: TestPanel, Assembly-CSharp
-        m_MethodName: apparitionVillager
+        m_MethodName: apparitionDefense
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -919,7 +919,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1511237103}
         m_TargetAssemblyTypeName: TestPanel, Assembly-CSharp
-        m_MethodName: apparitionVillager
+        m_MethodName: apparitionFood
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1119,7 +1119,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Apparition Defense
+  m_text: Prioririty Materials
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1209,7 +1209,7 @@ GameObject:
   - component: {fileID: 820211266}
   - component: {fileID: 820211265}
   m_Layer: 5
-  m_Name: DefenseButton (3)
+  m_Name: MatPriorButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1233,7 +1233,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -880, y: -349.25}
+  m_AnchoredPosition: {x: 879, y: -463.75}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &820211265
@@ -1282,7 +1282,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1511237103}
         m_TargetAssemblyTypeName: TestPanel, Assembly-CSharp
-        m_MethodName: apparitionVillager
+        m_MethodName: priorMaterials
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1416,7 +1416,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1511237103}
         m_TargetAssemblyTypeName: TestPanel, Assembly-CSharp
-        m_MethodName: apparitionVillager
+        m_MethodName: apparitionMaterials
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1604,10 +1604,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playersOnBoard: []
   activities: []
+  VillagersSelected: []
   foodQuantity: 0
   foodNeeded: 0
   materials: 0
   marginFood: 0.25
+  multiplierFoodNeededByStrongness: 0.1
   foodState: 0
   playerPrefab: {fileID: 8483357932703269045, guid: 3699a643a073806479e61e501a77cc76, type: 3}
 --- !u!4 &1014047499
@@ -1953,7 +1955,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Apparition Defense
+  m_text: Priority Food
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2043,7 +2045,7 @@ GameObject:
   - component: {fileID: 1462143059}
   - component: {fileID: 1462143058}
   m_Layer: 5
-  m_Name: DefenseButton (2)
+  m_Name: FoodPriorButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2067,7 +2069,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -880, y: -377}
+  m_AnchoredPosition: {x: 879, y: -491.5}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1462143058
@@ -2116,7 +2118,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1511237103}
         m_TargetAssemblyTypeName: TestPanel, Assembly-CSharp
-        m_MethodName: apparitionVillager
+        m_MethodName: priorFood
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2196,6 +2198,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 676d8923253e17d47805933c699f7803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activity: {fileID: 6205234250462952755, guid: f343b65d6f90bc04ebf203fd5ae8591c, type: 3}
+  foodActivities:
+  - {fileID: 11400000, guid: 459fa16452b1bd844aff4f771138c126, type: 2}
+  materialsActivities:
+  - {fileID: 11400000, guid: 40be4a2e27ac68a41bc473d15ff2a0bc, type: 2}
+  defenseActivities:
+  - {fileID: 11400000, guid: 0ddc9893dea030a4a8bf91a911b55a85, type: 2}
 --- !u!114 &1511237104
 MonoBehaviour:
   m_ObjectHideFlags: 0

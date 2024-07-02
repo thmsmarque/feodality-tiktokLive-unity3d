@@ -28,11 +28,12 @@ public class GameManagerScript : MonoBehaviour
     {
         playersOnBoard = new List<VillagerScript>();
         activities = new List<ActivityScript>();
+        StartCoroutine(react());
     }
 
     private void Update()
     {
-        StartCoroutine(react());    
+        
         handleSelectionByClick();
 
     }
@@ -41,13 +42,16 @@ public class GameManagerScript : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
+            //Debug.Log("Envoi du ray");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if(Physics.RayCast(ray, out hit)))
+            if(Physics.Raycast(ray, out hit))
             {
-                if(hit.GameObject.CompareWithTag("Villager"))
+                //Debug.Log("Le raycast a touché un collider");
+                if(hit.collider.gameObject.CompareTag("Villager"))
                 {
-                       VillagerScript vi = hit.GameObject.GetComponent<VillagerScript>();
+                    //Debug.Log("Le ray a touché un Villager");
+                       VillagerScript vi = hit.collider.gameObject.GetComponentInParent<VillagerScript>();
                        if(VillagersSelected.Contains(vi))
                        {
                             VillagersSelected.Remove(vi);
@@ -58,6 +62,9 @@ public class GameManagerScript : MonoBehaviour
                             VillagersSelected.Add(vi);
                             vi.selectVillager();
                        }
+                }else
+                {
+                    Debug.Log("Le ray n'a pas touché un joueur : " + hit.collider.tag);
                 }
             }
         }
@@ -67,9 +74,11 @@ public class GameManagerScript : MonoBehaviour
     {
         foreach(ActivityScript a in activities)
         {
-            a.getActivityTemplate().react();
+            a.react();
         }
+        updateFoodState();
         yield return new WaitForSeconds(0.1f);
+        resetFood();
         StartCoroutine(react());
     }
 
@@ -101,6 +110,8 @@ public class GameManagerScript : MonoBehaviour
         }
 
     }
+
+  
 
     public void updateFoodNeeded()
     {
@@ -137,6 +148,7 @@ public class GameManagerScript : MonoBehaviour
     public void addPlayerOnBoard(string name, long id)
     {
         GameObject tempP = Instantiate(playerPrefab,GetComponent<Transform>());
+        tempP.GetComponent<VillagerScript>().setName(name);
         playersOnBoard.Add(tempP.GetComponentInChildren<VillagerScript>());
         this.updateFoodNeeded();
         
@@ -144,7 +156,7 @@ public class GameManagerScript : MonoBehaviour
 
     public List<ActivityScript> getFoodActivities()
     {
-        List<ActivityScript> foodsActitivies = null;
+        List<ActivityScript> foodsActitivies = new List<ActivityScript>();
         foreach(ActivityScript a in activities)
         {
             if(a.getActivityTemplate().isFoodActivity())
@@ -276,4 +288,19 @@ public class GameManagerScript : MonoBehaviour
             playersOnBoard[i].changeActualActivity(materialsAc[aleaInt]);
         }
     }
+
+    public void addActivity(ActivityScript v)
+    {
+        activities.Add(v);
+    }
+    
+    public void removeActitvity(ActivityScript v)
+    {
+        if(activities.Contains(v))
+        {
+            activities.Remove(v);
+        }
+    }
+
+
 }
