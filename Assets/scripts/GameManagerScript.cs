@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManagerScript : MonoBehaviour
 {
     public List<VillagerScript> playersOnBoard;
-    public List<ActivityTemplate> activities;
+    public List<ActivityScript> activities;
     public List<VillagerScript> VillagersSelected;
 
     public float foodQuantity;
@@ -27,7 +27,7 @@ public class GameManagerScript : MonoBehaviour
     private void Start()
     {
         playersOnBoard = new List<VillagerScript>();
-        activities = new List<ActivityTemplate>();
+        activities = new List<ActivityScript>();
     }
 
     private void Update()
@@ -65,9 +65,9 @@ public class GameManagerScript : MonoBehaviour
 
     IEnumerator react()
     {
-        foreach(ActivityTemplate a in activities)
+        foreach(ActivityScript a in activities)
         {
-            a.react();
+            a.getActivityTemplate().react();
         }
         yield return new WaitForSeconds(0.1f);
         StartCoroutine(react());
@@ -142,12 +142,12 @@ public class GameManagerScript : MonoBehaviour
         
     }
 
-    public List<ActivityTemplate> getFoodActivities()
+    public List<ActivityScript> getFoodActivities()
     {
-        List<ActivityTemplate> foodsActitivies = null;
-        foreach(ActivityTemplate a in activities)
+        List<ActivityScript> foodsActitivies = null;
+        foreach(ActivityScript a in activities)
         {
-            if(a.isFoodActivity())
+            if(a.getActivityTemplate().isFoodActivity())
             {
                 foodsActitivies.Add(a);
             }
@@ -155,12 +155,12 @@ public class GameManagerScript : MonoBehaviour
         return foodsActitivies;
     }
 
-    public List<ActivityTemplate> getMaterialsActivities()
+    public List<ActivityScript> getMaterialsActivities()
     {
-        List<ActivityTemplate> materialsActivities = new List<ActivityTemplate>();
-        foreach (ActivityTemplate a in activities)
+        List<ActivityScript> materialsActivities = new List<ActivityScript>();
+        foreach (ActivityScript a in activities)
         {
-            if (a.isMaterialsActivity())
+            if (a.getActivityTemplate().isMaterialsActivity())
             {
                 materialsActivities.Add(a);
             }
@@ -168,12 +168,12 @@ public class GameManagerScript : MonoBehaviour
         return materialsActivities;
     }
 
-    public List<ActivityTemplate> getDefenseActivities()
+    public List<ActivityScript> getDefenseActivities()
     {
-        List<ActivityTemplate> defenseActivities = new List<ActivityTemplate>();
-        foreach (ActivityTemplate a in activities)
+        List<ActivityScript> defenseActivities = new List<ActivityScript>();
+        foreach (ActivityScript a in activities)
         {
-            if (a.isDefenseActivity())
+            if (a.getActivityTemplate().isDefenseActivity())
             {
                 defenseActivities.Add(a);
             }
@@ -193,9 +193,9 @@ public class GameManagerScript : MonoBehaviour
         int huitieme = (int)(nbVillagers*0.8f);
         int dix = (int)(nbVillagers*0.1f);
 
-        List<ActivityTemplate> foodAc = getFoodActivities();
-        List<ActivityTemplate> materialsAc = getMaterialsActivities();
-        List<ActivityTemplate> defAc = getDefenseActivities();
+        List<ActivityScript> foodAc = getFoodActivities();
+        List<ActivityScript> materialsAc = getMaterialsActivities();
+        List<ActivityScript> defAc = getDefenseActivities();
         System.Random rand = new System.Random();
         for (int i = 0; i<huitieme; i++)
         {
@@ -225,9 +225,9 @@ public class GameManagerScript : MonoBehaviour
         int huitieme = (int)(nbVillagers*0.8f);
         int dix = (int)(nbVillagers*0.1f);
 
-        List<ActivityTemplate> foodAc = getFoodActivities();
-        List<ActivityTemplate> materialsAc = getMaterialsActivities();
-        List<ActivityTemplate> defAc = getDefenseActivities();
+        List<ActivityScript> foodAc = getFoodActivities();
+        List<ActivityScript> materialsAc = getMaterialsActivities();
+        List<ActivityScript> defAc = getDefenseActivities();
         System.Random rand = new System.Random();
 
         for (int i = 0; i < huitieme; i++)
@@ -255,9 +255,9 @@ public class GameManagerScript : MonoBehaviour
         int huitieme = (int)(nbVillagers*0.8f);
         int dix = (int)(nbVillagers*0.1f);
 
-        List<ActivityTemplate> foodAc = getFoodActivities();
-        List<ActivityTemplate> materialsAc = getMaterialsActivities();
-        List<ActivityTemplate> defAc = getDefenseActivities();
+        List<ActivityScript> foodAc = getFoodActivities();
+        List<ActivityScript> materialsAc = getMaterialsActivities();
+        List<ActivityScript> defAc = getDefenseActivities();
         System.Random rand = new System.Random();
 
         for (int i = 0; i<huitieme; i++)

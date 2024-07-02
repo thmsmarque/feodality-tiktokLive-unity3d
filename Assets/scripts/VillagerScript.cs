@@ -5,7 +5,7 @@ using UnityEngine;
 public class VillagerScript : MonoBehaviour
 {
     [SerializeField]
-    ActivityTemplate actualActivity;
+    ActivityScript actualActivity;
 
     /// <summary>
     /// How strong he is
@@ -47,7 +47,7 @@ public class VillagerScript : MonoBehaviour
     /// Change the actual activity
     /// </summary>
     /// <param name="ac">new actual activiy</param>
-    public void changeActualActivity(ActivityTemplate ac)
+    public void changeActualActivity(ActivityScript ac)
     {
         if(actualActivity != null)
         {
@@ -57,10 +57,15 @@ public class VillagerScript : MonoBehaviour
         ac.addVillager(this);
     }
 
+    public void doingNothing()
+    {
+        actualActivity = null;
+    }
+
     
 
 
-    public ActivityTemplate getActualActivity()
+    public ActivityScript getActualActivity()
     {
         return actualActivity;
     }

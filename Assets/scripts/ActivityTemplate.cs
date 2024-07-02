@@ -14,7 +14,6 @@ public class ActivityTemplate : ScriptableObject
     public string name;
     public TYPE activityType;
     public GameObject prefab;
-    public List<VillagerScript> villagersList = new List<VillagerScript>();
     public int capacity;
 
     public void react()
@@ -46,21 +45,7 @@ public class ActivityTemplate : ScriptableObject
         }
     }
 
-    public void addVillager(VillagerScript b)
-    {
-        this.villagersList.Add(b);
-    }
-
-    public void removeVillager(VillagerScript b)
-    {
-        if(this.villagersList.Contains(b))
-            this.villagersList.Remove(b);
-    }
-
-    public List<VillagerScript> getVillagerList()
-    {
-        return villagersList;
-    }
+    
 
     public bool isFoodActivity()
     {
