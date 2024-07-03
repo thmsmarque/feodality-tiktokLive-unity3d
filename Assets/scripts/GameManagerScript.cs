@@ -13,6 +13,7 @@ public class GameManagerScript : MonoBehaviour
     public float materials;
     public float marginFood = 0.25f;
     public float multiplierFoodNeededByStrongness = 0.1f;
+    public float priorityProportion = 0.6f;
 
     enum FOOD_STATE
     {
@@ -42,15 +43,16 @@ public class GameManagerScript : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
+            //Selection villageois ou activitÃ©
             //Debug.Log("Envoi du ray");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if(Physics.Raycast(ray, out hit))
             {
-                //Debug.Log("Le raycast a touché un collider");
+                //Debug.Log("Le raycast a touchï¿½ un collider");
                 if(hit.collider.gameObject.CompareTag("Villager"))
                 {
-                    //Debug.Log("Le ray a touché un Villager");
+                    //Debug.Log("Le ray a touchï¿½ un Villager");
                        VillagerScript vi = hit.collider.gameObject.GetComponentInParent<VillagerScript>();
                        if(VillagersSelected.Contains(vi))
                        {
@@ -62,9 +64,35 @@ public class GameManagerScript : MonoBehaviour
                             VillagersSelected.Add(vi);
                             vi.selectVillager();
                        }
-                }else
+                }else if(hit.collider.gameObject.CompareTag("Activity"))
                 {
-                    Debug.Log("Le ray n'a pas touché un joueur : " + hit.collider.tag);
+                    if(VillagersSelected.Count() > 0)
+                    {
+                        foreach(VillagerScript vi in VillagersSelected)
+                        {
+                            vi.changeActualActivity(hit.collider.gameObject.GetComponent<ActivityScript>());
+                            VillagersSelected.Remove(vi);
+                            vi.deselectVillager();
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.Log("Le ray n'a pas touchï¿½ un joueur : " + hit.collider.tag);
+                }
+            }
+        }
+        if(Input.GetMouseButtonDown(1))
+        {
+            //Affiche les informations sur le villageois ou l'activitÃ©
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if(Physics.Raycast(ray, out hit))
+            {
+                //Debug.Log("Le raycast a touchï¿½ un collider");
+                if(hit.collider.gameObject.CompareTag("Villager"))
+                {
+                    //Ouverture de la fenÃªtre
                 }
             }
         }
@@ -202,8 +230,8 @@ public class GameManagerScript : MonoBehaviour
     {
         playersOnBoard.Sort(new IComparerEfficacity());
         float nbVillagers = (float)playersOnBoard.Count;
-        int huitieme = (int)(nbVillagers*0.8f);
-        int dix = (int)(nbVillagers*0.1f);
+        int huitieme = (int)(nbVillagers*priorityProportion);
+        int dix = (int)(nbVillagers*(1 - priorityProportion)/2);
 
         List<ActivityScript> foodAc = getFoodActivities();
         List<ActivityScript> materialsAc = getMaterialsActivities();
@@ -234,8 +262,8 @@ public class GameManagerScript : MonoBehaviour
     {
         playersOnBoard.Sort(new IComparerEfficacity());
         float nbVillagers = (float)playersOnBoard.Count;
-        int huitieme = (int)(nbVillagers*0.8f);
-        int dix = (int)(nbVillagers*0.1f);
+        int huitieme = (int)(nbVillagers*priorityProportion);
+        int dix = (int)(nbVillagers*(1 - priorityProportion)/2);
 
         List<ActivityScript> foodAc = getFoodActivities();
         List<ActivityScript> materialsAc = getMaterialsActivities();
@@ -264,8 +292,8 @@ public class GameManagerScript : MonoBehaviour
     {
         playersOnBoard.Sort(new IComparerStrongness());
         float nbVillagers = (float)playersOnBoard.Count;
-        int huitieme = (int)(nbVillagers*0.8f);
-        int dix = (int)(nbVillagers*0.1f);
+        int huitieme = (int)(nbVillagers*priorityProportion);
+        int dix = (int)(nbVillagers*(1 - priorityProportion)/2);
 
         List<ActivityScript> foodAc = getFoodActivities();
         List<ActivityScript> materialsAc = getMaterialsActivities();
