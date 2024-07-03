@@ -66,12 +66,17 @@ public class GameManagerScript : MonoBehaviour
                        }
                 }else if(hit.collider.gameObject.CompareTag("Activity"))
                 {
-                    if(VillagersSelected.Count() > 0)
+                    if(VillagersSelected.Count > 0)
                     {
                         foreach(VillagerScript vi in VillagersSelected)
                         {
                             vi.changeActualActivity(hit.collider.gameObject.GetComponent<ActivityScript>());
-                            VillagersSelected.Remove(vi);
+                            
+                        }
+                        for (int i = VillagersSelected.Count - 1; i >= 0; i--)
+                        {
+                            VillagerScript vi = VillagersSelected[i];
+                            VillagersSelected.RemoveAt(i);
                             vi.deselectVillager();
                         }
                     }
