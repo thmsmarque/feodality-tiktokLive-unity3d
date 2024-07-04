@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Villager
   - Activity
+  - Floor
   layers:
   - Default
   - TransparentFX

@@ -81,10 +81,10 @@ public class GameManagerScript : MonoBehaviour
                         }
                     }
                 }
-                else
+                /*else
                 {
                     Debug.Log("Le ray n'a pas touch� un joueur : " + hit.collider.tag);
-                }
+                }*/
             }
         }
         if(Input.GetMouseButtonDown(1))

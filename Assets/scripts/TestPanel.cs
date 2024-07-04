@@ -59,4 +59,9 @@ public class TestPanel : MonoBehaviour
     {
         gm.GetComponent<GameManagerScript>().positionDefense();
     }
+
+    public void construcTest()
+    {
+        gm.GetComponent<BuildScript>().startCoroutineBuildMode(foodActivities[0]);
+    }
 }

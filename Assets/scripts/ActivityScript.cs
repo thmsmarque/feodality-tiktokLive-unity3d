@@ -12,6 +12,7 @@ public class ActivityScript : MonoBehaviour
     private void Start()
     {
        gm = GameObject.FindWithTag("GameController").GetComponent<GameManagerScript>();
+       
     }
 
     public void react()
@@ -69,6 +70,10 @@ public class ActivityScript : MonoBehaviour
     public void setActivityTemplate(ActivityTemplate ac)
     {
         this.acTemp = ac;
+        if (acTemp.prefab != null)
+        {
+            Instantiate(acTemp.prefab, gameObject.GetComponent<Transform>().position, Quaternion.identity, gameObject.transform);
+        }
     }
 
 

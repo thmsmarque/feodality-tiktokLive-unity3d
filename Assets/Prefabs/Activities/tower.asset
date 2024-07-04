@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: tower
   activityType: 2
-  prefab: {fileID: 0}
+  prefab: {fileID: 771525453024264160, guid: c3a0010112d4291449a1229d1cd70ae5, type: 3}
   capacity: 2
+  multiplierEfficacity: 0
+  costInMaterials: 0

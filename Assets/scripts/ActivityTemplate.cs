@@ -15,6 +15,8 @@ public class ActivityTemplate : ScriptableObject
     public TYPE activityType;
     public GameObject prefab;
     public int capacity;
+    public float multiplierEfficacity;
+    public float costInMaterials;
 
     
 
