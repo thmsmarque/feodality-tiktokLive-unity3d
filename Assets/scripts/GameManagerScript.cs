@@ -80,6 +80,15 @@ public class GameManagerScript : MonoBehaviour
                             vi.deselectVillager();
                         }
                     }
+                }else if(hit.collider.gameObject.CompareTag("Floor"))
+                {
+                    if(VillagersSelected.Count > 0)
+                    {
+                        foreach(VillagerScript v in VillagersSelected)
+                        {
+                            v.setNewDestination(hit.point);
+                        }
+                    }
                 }
                 /*else
                 {
@@ -167,9 +176,10 @@ public class GameManagerScript : MonoBehaviour
         this.materials += mat;
     }
 
-    public void removeMaterials(int mat)
+
+    public void removeMaterials(float mat)
     {
-        if(mat > materials)
+        if(mat < materials)
         {
             materials -= mat;
         }else

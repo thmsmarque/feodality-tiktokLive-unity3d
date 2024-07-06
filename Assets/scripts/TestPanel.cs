@@ -60,8 +60,18 @@ public class TestPanel : MonoBehaviour
         gm.GetComponent<GameManagerScript>().positionDefense();
     }
 
-    public void construcTest()
+    public void construcChamp()
     {
         gm.GetComponent<BuildScript>().startCoroutineBuildMode(foodActivities[0]);
+    }
+
+    public void construcArbre()
+    {
+        gm.GetComponent<BuildScript>().startCoroutineBuildMode(materialsActivities[0]);
+    }
+
+    public void construcTour()
+    {
+        gm.GetComponent<BuildScript>().startCoroutineBuildMode(defenseActivities[0]);
     }
 }

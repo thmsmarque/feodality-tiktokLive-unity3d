@@ -18,6 +18,8 @@ public class ActivityTemplate : ScriptableObject
     public float multiplierEfficacity;
     public float costInMaterials;
 
+    public float elevatedHeight = 0f;
+
     
 
     public bool isFoodActivity()

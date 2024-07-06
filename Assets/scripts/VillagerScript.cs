@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class VillagerScript : MonoBehaviour
 {
     [SerializeField]
     ActivityScript actualActivity;
+
+    NavMeshAgent navMeshAgent;
 
     /// <summary>
     /// How strong he is
@@ -28,6 +31,7 @@ public class VillagerScript : MonoBehaviour
     {
         actualActivity = null;
         isSelected = false;
+        navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
     public void selectVillager()
@@ -43,6 +47,11 @@ public class VillagerScript : MonoBehaviour
         //Desactivier effet selection
         gameObject.GetComponentInChildren<Renderer>().material.color = Color.white;
 
+    }
+
+    public void setNewDestination(Vector3 target)
+    {
+        navMeshAgent.SetDestination(target);
     }
 
 

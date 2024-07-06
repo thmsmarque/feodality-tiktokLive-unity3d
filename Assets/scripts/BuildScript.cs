@@ -15,9 +15,21 @@ public class BuildScript : MonoBehaviour
 
     public float radius = 1f;
 
+    public LayerMask layerToGet;
+
+    public LayerMask activityLayer;
+
+    GameManagerScript gm;
+
     void Start()
     {
         buildMode = false;
+        layerToGet = LayerMask.GetMask("Floor");
+        layerToGet = ~layerToGet;
+        activityLayer = LayerMask.GetMask("Floor");
+
+        gm = GetComponent<GameManagerScript>();
+
     }
 
     // Update is called once per frame
@@ -37,14 +49,13 @@ public class BuildScript : MonoBehaviour
                 buildMode = false;
             }
 
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit,Mathf.Infinity, layerToGet))
             {
-                if (hit.collider.tag == "Floor")
-                {
-                    tempBuild.transform.position = hit.point;
-                }
+                Vector3 elevatedPosition = hit.point;
+                elevatedPosition.y += actualTemplate.elevatedHeight;
+                tempBuild.transform.position = elevatedPosition;
             }
 
             if (checkBuild())
@@ -53,9 +64,10 @@ public class BuildScript : MonoBehaviour
                 if(Input.GetMouseButtonDown(0))
                 {
                     Debug.Log("Lancement Construction...");
-                    GameObject tempNewActivity = Instantiate(activityPrefab, hit.point, Quaternion.identity, transform);
+                    GameObject tempNewActivity = Instantiate(activityPrefab, tempBuild.transform.position, Quaternion.identity, transform);
                     tempNewActivity.GetComponent<ActivityScript>().setActivityTemplate(actualTemplate);
-                    GetComponent<GameManagerScript>().addActivity(tempNewActivity.GetComponent<ActivityScript>());
+                    gm.addActivity(tempNewActivity.GetComponent<ActivityScript>());
+                    gm.removeMaterials(actualTemplate.costInMaterials);
                     
                 }
             }
@@ -69,23 +81,29 @@ public class BuildScript : MonoBehaviour
 
     bool checkBuild()
     {
+
+        if(actualTemplate.costInMaterials > gm.materials)
+        {
+            return false;
+        }
+
         // Origine de la sphère, souvent la position du joueur ou de l'objet
         Vector3 origin = tempBuild.transform.position;
 
         // Utiliser Physics.OverlapSphere pour obtenir tous les colliders dans la sphère
-        Collider[] hitColliders = Physics.OverlapSphere(origin, radius);
+        Collider[] hitColliders = Physics.OverlapSphere(origin, radius, activityLayer);
         // Si la sphère touche un ou plusieurs colliders, retourner false
         if (hitColliders.Length > 0)
         {
-            //Debug.Log("Les collisions : " + hitColliders+ "  Le nombre de colliders : " + hitColliders.Length);
-            foreach(Collider c in hitColliders)
+            foreach (Collider collider in hitColliders)
             {
-                if (c.tag != "Floor" && !c.Equals(tempBuild.GetComponent<Collider>()))
+                if (collider.gameObject != tempBuild)
                 {
                     return false;
                 }
             }
-        }else
+        }
+        else
         {
             return true;
         }
@@ -109,7 +127,13 @@ public class BuildScript : MonoBehaviour
 
     IEnumerator startBuildMode(ActivityTemplate template)
     {
+        if(tempBuild != null)
+        {
+            Destroy(tempBuild);
+        }
+
         tempBuild = Instantiate(template.prefab, transform);
+
         buildMode = true;
         yield return new WaitWhile(()=>buildMode);
         buildMode = false;
