@@ -44,6 +44,13 @@ public class ActivityScript : MonoBehaviour
             {
                 v.trainOneTime();
             }
+        }else if(acTemp.isCultActivity())
+        {
+            faith =0;
+            foreach(VillagerScript v in villagersList)
+            {
+                faith += v.getEfficacity();
+            }
         }
         
     }
@@ -67,7 +74,7 @@ public class ActivityScript : MonoBehaviour
     /// <returns>If health<=0 return true else return false</returns>
     public bool removeHealth(float dmg)
     {
-        Debug.Log("Vie retirée : " + dmg + "   Vie : " + health) ;
+        Debug.Log("Vie retirï¿½e : " + dmg + "   Vie : " + health) ;
         this.health -= dmg;
         if(health > 0)
         {

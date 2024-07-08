@@ -9,4 +9,5 @@ public class TourTemplate : ScriptableObject
     public float speedAttack;
     public float power;
     public float range;
+    public float faithNeeded;
 }

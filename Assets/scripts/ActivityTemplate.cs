@@ -8,7 +8,7 @@ public class ActivityTemplate : ScriptableObject
 {
 
     public enum TYPE{
-        FOOD,MATERIALS,DEFENSE,TRAINING,RESTING
+        FOOD,MATERIALS,DEFENSE,TRAINING,RESTING,CULT
     };
 
     public string name;
@@ -43,6 +43,10 @@ public class ActivityTemplate : ScriptableObject
     public bool isTrainingActivity()
     {
         return TYPE.RESTING == activityType;
+    }
+    public bool isCultActivity()
+    {
+        return TYPE.CULT == activityType;
     }
 
 }

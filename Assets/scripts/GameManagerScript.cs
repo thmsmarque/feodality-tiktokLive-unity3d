@@ -7,9 +7,12 @@ public class GameManagerScript : MonoBehaviour
     public List<VillagerScript> playersOnBoard;
     public List<ActivityScript> activities;
     public List<VillagerScript> VillagersSelected;
+    public List<TowerScript> towers;
 
     public float foodQuantity;
     public float foodNeeded;
+    public float faithQuantity;
+    public float faithNeeded;
     public float materials;
     public float marginFood = 0.25f;
     public float multiplierFoodNeededByStrongness = 0.1f;
@@ -20,8 +23,15 @@ public class GameManagerScript : MonoBehaviour
         STARVING,UNDER,UPON,ABUNDANCE 
     }
 
+    enum FAITH_STATE
+    {
+        LACK,BALANCE,FAITHFUL
+    }
+
     [SerializeField]
     FOOD_STATE foodState;
+    [SerializeField
+    FAITH_STATE faithState;]
 
     public GameObject playerPrefab;
 
@@ -119,14 +129,25 @@ public class GameManagerScript : MonoBehaviour
             a.react();
         }
         updateFoodState();
+        UpdateFaithState();
         yield return new WaitForSeconds(0.1f);
         resetFood();
+        resetFaith();
         StartCoroutine(react());
     }
 
     public void resetFood()
     {
         foodQuantity = 0;
+    }
+
+    public void resetFaith()
+    {
+        faithQuantity = 0;
+        foreach(VillagerScript v in villagersList)
+        [
+            v.faithCollected = false;
+        ]
     }
 
     public void updateFoodState()
@@ -153,6 +174,28 @@ public class GameManagerScript : MonoBehaviour
 
     }
 
+    public void UpdateFaithState()
+    {
+        if (foodQuantity >= foodNeeded && foodQuantity < foodNeeded * (1f + marginFood))
+        {
+            //Enough
+            foodState = FOOD_STATE.UPON;
+        }
+        else if (foodQuantity < foodNeeded && foodQuantity >= foodNeeded * (1f - marginFood))
+        {
+            //Not enough
+            foodState = FOOD_STATE.UNDER;
+        }else if (foodQuantity <= foodNeeded * (1f - marginFood))
+        {
+            //Starving
+            foodState = FOOD_STATE.STARVING;
+        }else if(foodQuantity >= foodNeeded * (1f + marginFood))
+        {
+            //A lot of food
+            foodState = FOOD_STATE.ABUNDANCE;
+        }
+    }
+
   
 
     public void updateFoodNeeded()
@@ -164,6 +207,17 @@ public class GameManagerScript : MonoBehaviour
         }
         this.foodNeeded = foodneed;
         this.updateFoodState();
+    }
+
+    public void updateFaithNeeded()
+    {
+        float faithneed =0 ;
+        foreach(TowerScript as in activities)
+        {
+            faithneed += as.towerTemp.faithneed;
+        }
+        this.faithneed = faithneed;
+        this.UpdateFaithState();
     }
 
     public void addFood(float food)

@@ -25,12 +25,14 @@ public class VillagerScript : MonoBehaviour
     public int numberOfLikes;
 
     public bool isSelected;
+    public bool faithCollected;
 
     // Start is called before the first frame update
     void Start()
     {
         actualActivity = null;
         isSelected = false;
+        faithCollected = false;
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
