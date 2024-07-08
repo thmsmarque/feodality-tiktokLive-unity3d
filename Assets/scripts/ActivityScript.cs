@@ -7,10 +7,13 @@ public class ActivityScript : MonoBehaviour
     public ActivityTemplate acTemp;
     public List<VillagerScript> villagersList = new List<VillagerScript>();
 
+    public float health;
+
     public GameManagerScript gm;
 
     private void Start()
     {
+        health = acTemp.health;
        gm = GameObject.FindWithTag("GameController").GetComponent<GameManagerScript>();
        
     }
@@ -55,6 +58,25 @@ public class ActivityScript : MonoBehaviour
     {
         if(this.villagersList.Contains(b))
             this.villagersList.Remove(b);
+    }
+
+    /// <summary>
+    /// Remove health from activity
+    /// </summary>
+    /// <param name="dmg"></param>
+    /// <returns>If health<=0 return true else return false</returns>
+    public bool removeHealth(float dmg)
+    {
+        Debug.Log("Vie retirée : " + dmg + "   Vie : " + health) ;
+        this.health -= dmg;
+        if(health > 0)
+        {
+            return false;
+        }else
+        {
+            return false;
+        }
+
     }
 
     public List<VillagerScript> getVillagerList()

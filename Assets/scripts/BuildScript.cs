@@ -21,12 +21,13 @@ public class BuildScript : MonoBehaviour
 
     GameManagerScript gm;
 
+
     void Start()
     {
         buildMode = false;
-        layerToGet = LayerMask.GetMask("Floor");
+        layerToGet = LayerMask.GetMask("Activity");
         layerToGet = ~layerToGet;
-        activityLayer = LayerMask.GetMask("Floor");
+        activityLayer = LayerMask.GetMask("Activity");
 
         gm = GetComponent<GameManagerScript>();
 
