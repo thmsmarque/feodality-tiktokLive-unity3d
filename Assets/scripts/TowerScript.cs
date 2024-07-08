@@ -7,11 +7,16 @@ public class TowerScript : MonoBehaviour
     [SerializeField]
     TourTemplate towerTemp;
 
+    GameManagerScript gm;
     bool fightMode;
+
+    GameObjet target;
 
     void Start()
     {
         fightMode = false;
+        gm = GameObject.FindWithTag("GameController").GetComponent<GameManagerScript>();
+ 
     }
 
 
@@ -35,24 +40,45 @@ public class TowerScript : MonoBehaviour
 
         if (hitColliders.Length > 0)
         {
-            foreach (var collider in sortedColliders)
+            target = sortedColliders[0];
+            fightMode = true;
+            StartCoroutine(fightOneTime());
+        }
+    }
+
+    IEnumerator fightOneTime()
+    {     
+        if(isTargetInRange())
+        {
+            Vector3 origin = target.transform.position;
+
+            Collider[] hitColliders = Physics.OverlapSphere(origin, towerTemp.degatZone, towerTemp.layerTarget);
+
+            foreach(Collider c in hitColliders)
             {
-                if (collider.gameObject == Nexus.gameObject)
+                if(c.gameObject != target)
                 {
-                    fight = true;
-                    target = Nexus;
-                    nav.SetDestination(target.transform.position);
-                    break;
-                }
-                else
-                {
-                    fight = true;
-                    target = sortedColliders[0].gameObject;
-                    nav.SetDestination(target.transform.position);
+                    c.gameObject.GetComponentInParent<EnnemyScript>().takingDamage(towerTemp.power * gm.getFaithState * 0.5f);
                 }
             }
-            StartCoroutine(fightOneTime());
 
+            if(target.GetComponentInParent<EnnemyScript>().takingDamage(towerTemp.power * gm.getFaithState))
+            {
+                target = null;
+                fightMode = false;
+            }
+        }else
+        {
+            target = null;
+            fightMode = false;
         }
+        
+    }
+
+    bool isTargetInRange()
+    {
+        if (target == null) return false; // V�rifiez que la cible n'est pas null
+        float distanceToTarget = Vector3.Distance(transform.position, target.gameObject.transform.position);
+        return distanceToTarget <= towerTemp.range;
     }
 }

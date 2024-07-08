@@ -12,6 +12,8 @@ public class EnnemyScript : MonoBehaviour
     GameObject Nexus;
     NavMeshAgent nav;
 
+    public float health;
+
     GameObject target;
     bool fight;
 
@@ -21,7 +23,7 @@ public class EnnemyScript : MonoBehaviour
         nav = GetComponent<NavMeshAgent>();
         nav.SetDestination(Nexus.transform.position);
         nav.speed = typeOfEnnemy.speed;
-
+        this.health = typeOfEnnemy.health;
 
     }
 
@@ -78,7 +80,7 @@ public class EnnemyScript : MonoBehaviour
     {
         Debug.Log("Part attaquer");
         yield return new WaitUntil(() => isTargetInRange());
-        Debug.Log("Dans la portée d'attaque");
+        Debug.Log("Dans la portï¿½e d'attaque");
         nav.SetDestination(transform.position);
         
         if(target.GetComponentInParent<ActivityScript>().removeHealth(typeOfEnnemy.power))
@@ -101,9 +103,25 @@ public class EnnemyScript : MonoBehaviour
 
     bool isTargetInRange()
     {
-        if (target == null) return false; // Vérifiez que la cible n'est pas null
+        if (target == null) return false; // Vï¿½rifiez que la cible n'est pas null
         float distanceToTarget = Vector3.Distance(transform.position, target.gameObject.transform.position);
         return distanceToTarget <= typeOfEnnemy.rangeOfAttack;
+    }
+
+    public bool takingDamage(float dmg)
+    {
+        health -= dmg;
+        if(health<0)
+        {
+            return true;
+            die();
+        }else
+            return false;
+    }
+
+    public void die()
+    {
+        Destroy(gameObject);
     }
 
 }

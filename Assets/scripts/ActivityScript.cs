@@ -36,7 +36,7 @@ public class ActivityScript : MonoBehaviour
             {
                 materials += v.getEfficacity() * 0.1f;
             }
-            gm.addMaterials(materials);
+            gm.addMaterials(materials  * gm.getHungerState());
             
         }else if(acTemp.isTrainingActivity())
         {
@@ -51,6 +51,7 @@ public class ActivityScript : MonoBehaviour
             {
                 faith += v.getEfficacity();
             }
+            gm.addFaith(faith  * gm.getHungerState())
         }
         
     }

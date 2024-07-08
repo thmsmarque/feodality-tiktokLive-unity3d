@@ -21,12 +21,12 @@ public class GameManagerScript : MonoBehaviour
 
     enum FOOD_STATE
     {
-        STARVING,UNDER,UPON,ABUNDANCE 
+        STARVING = 0.1f ,UNDER = 0.8f ,UPON =  1.0f,ABUNDANCE = 1.45f
     }
 
     enum FAITH_STATE
     {
-        LACK,BALANCE,FAITHFUL
+        LACK = 0.3f ,BALANCE = 1f ,FAITHFUL = 1.5f
     }
 
     [SerializeField]
@@ -207,6 +207,16 @@ public class GameManagerScript : MonoBehaviour
         this.updateFoodState();
     }
 
+    public float getHungerState()
+    {
+        return foodState;
+    }
+
+    public float getFaithState()
+    {
+        return faithState;
+    }
+
     public void updateFaithNeeded()
     {
         float faithneed =0 ;
@@ -226,6 +236,11 @@ public class GameManagerScript : MonoBehaviour
     public void addMaterials(float mat)
     {
         this.materials += mat;
+    }
+
+    public void addFaith(float faith)
+    {
+        this.faithQuantity += faith;
     }
 
 

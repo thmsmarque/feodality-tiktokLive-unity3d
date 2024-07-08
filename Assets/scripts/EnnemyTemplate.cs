@@ -12,6 +12,7 @@ public class EnnemyTemplate : ScriptableObject
     public float power;
     public float speedAttack;
     public float speed;
+    public float health
 
     public LayerMask layerTarget;
 
