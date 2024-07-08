@@ -15,6 +15,7 @@ public class GameManagerScript : MonoBehaviour
     public float faithNeeded;
     public float materials;
     public float marginFood = 0.25f;
+    public float marginFaith = 0.25f;
     public float multiplierFoodNeededByStrongness = 0.1f;
     public float priorityProportion = 0.6f;
 
@@ -176,23 +177,20 @@ public class GameManagerScript : MonoBehaviour
 
     public void UpdateFaithState()
     {
-        if (foodQuantity >= foodNeeded && foodQuantity < foodNeeded * (1f + marginFood))
+        if (faithQuantity >= faithneed *(1f-marginFaith) && faithQuantity <= faithneed * (1f + marginFaith))
         {
             //Enough
-            foodState = FOOD_STATE.UPON;
+            faithState = FAITH_STATE.BALANCE;
         }
-        else if (foodQuantity < foodNeeded && foodQuantity >= foodNeeded * (1f - marginFood))
+        else if (faithQuantity < faithneed * (1f-marginFaith))
         {
             //Not enough
-            foodState = FOOD_STATE.UNDER;
-        }else if (foodQuantity <= foodNeeded * (1f - marginFood))
+            faithState = FAITH_STATE.LACK;
+
+        }else if (faithQuantity > faithneed * (1f + marginFaith))
         {
             //Starving
-            foodState = FOOD_STATE.STARVING;
-        }else if(foodQuantity >= foodNeeded * (1f + marginFood))
-        {
-            //A lot of food
-            foodState = FOOD_STATE.ABUNDANCE;
+            foodState = FAITH_STATE.FAITHFUL;
         }
     }
 
@@ -391,11 +389,25 @@ public class GameManagerScript : MonoBehaviour
         activities.Add(v);
     }
     
+    
     public void removeActitvity(ActivityScript v)
     {
         if(activities.Contains(v))
         {
             activities.Remove(v);
+        }
+    }
+
+    public void addTower(TowerScript t)
+    {
+        towers.Add(t);
+    }
+
+    public void removeTower(TowerScript t)
+    {
+        if(towers.Contains(t))
+        {
+            towers.Remove(t);
         }
     }
 

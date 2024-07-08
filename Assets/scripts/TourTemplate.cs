@@ -10,4 +10,7 @@ public class TourTemplate : ScriptableObject
     public float power;
     public float range;
     public float faithNeeded;
+    public float degatZone;
+
+    public LayerMask layerTarget; 
 }
