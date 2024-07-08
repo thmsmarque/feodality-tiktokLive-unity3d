@@ -11,6 +11,7 @@ public class TourTemplate : ScriptableObject
     public float range;
     public float faithNeeded;
     public float degatZone;
+    public float health;
 
     public LayerMask layerTarget; 
 }

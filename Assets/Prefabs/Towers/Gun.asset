@@ -9,16 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23460b0ff88247d468c1924a4b76b701, type: 3}
-  m_Name: Gnome
+  m_Script: {fileID: 11500000, guid: a32e68f798c0449459ec83b5039e97ee, type: 3}
+  m_Name: Gun
   m_EditorClassIdentifier: 
   prefab: {fileID: 0}
-  rangeOfSearch: 3
-  rangeOfAttack: 3
-  power: 10
-  speedAttack: 1
-  speed: 2.5
-  health: 50
+  speedAttack: 0.5
+  power: 1
+  range: 7
+  faithNeeded: 1
+  degatZone: 2
+  health: 2
   layerTarget:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 512

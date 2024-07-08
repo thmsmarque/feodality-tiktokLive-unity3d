@@ -32,12 +32,14 @@ public class EnnemyScript : MonoBehaviour
     {
         if(!fight)
         {
+            
             handleSearchingForFight();
         }
     }
 
     void handleSearchingForFight()
     {
+
         Vector3 origin = gameObject.transform.position;
 
         Collider[] hitColliders = Physics.OverlapSphere(origin, typeOfEnnemy.rangeOfSearch, typeOfEnnemy.layerTarget);
@@ -72,7 +74,7 @@ public class EnnemyScript : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, typeOfEnnemy.rangeOfSearch);
     }
 
@@ -86,7 +88,8 @@ public class EnnemyScript : MonoBehaviour
         if(target.GetComponentInParent<ActivityScript>().removeHealth(typeOfEnnemy.power))
         {
             hasDestroyActivity();
-        }else
+        }
+        else
         {
             yield return new WaitForSeconds(typeOfEnnemy.speedAttack);
             StartCoroutine(fightOneTime());
@@ -110,13 +113,15 @@ public class EnnemyScript : MonoBehaviour
 
     public bool takingDamage(float dmg)
     {
+        Debug.Log("prend des dégats : " + dmg + "   Nouvelle vie : " + (health - dmg));
         health -= dmg;
-        if(health<0)
+        if(health > 0 )
+        {
+            return false;
+        }else
         {
             return true;
-            die();
-        }else
-            return false;
+        }
     }
 
     public void die()

@@ -21,18 +21,18 @@ public class GameManagerScript : MonoBehaviour
 
     enum FOOD_STATE
     {
-        STARVING = 0.1f ,UNDER = 0.8f ,UPON =  1.0f,ABUNDANCE = 1.45f
+        STARVING = 10, UNDER = 80, UPON = 100, ABUNDANCE = 145
     }
 
     enum FAITH_STATE
     {
-        LACK = 0.3f ,BALANCE = 1f ,FAITHFUL = 1.5f
+        LACK = 30, BALANCE = 100, FAITHFUL = 150
     }
 
     [SerializeField]
     FOOD_STATE foodState;
-    [SerializeField
-    FAITH_STATE faithState;]
+    [SerializeField]
+    FAITH_STATE faithState;
 
     public GameObject playerPrefab;
 
@@ -145,10 +145,10 @@ public class GameManagerScript : MonoBehaviour
     public void resetFaith()
     {
         faithQuantity = 0;
-        foreach(VillagerScript v in villagersList)
-        [
+        foreach (VillagerScript v in playersOnBoard)
+        {
             v.faithCollected = false;
-        ]
+        }
     }
 
     public void updateFoodState()
@@ -177,20 +177,20 @@ public class GameManagerScript : MonoBehaviour
 
     public void UpdateFaithState()
     {
-        if (faithQuantity >= faithneed *(1f-marginFaith) && faithQuantity <= faithneed * (1f + marginFaith))
+        if (faithQuantity >= faithNeeded *(1f-marginFaith) && faithQuantity <= faithNeeded * (1f + marginFaith))
         {
             //Enough
             faithState = FAITH_STATE.BALANCE;
         }
-        else if (faithQuantity < faithneed * (1f-marginFaith))
+        else if (faithQuantity < faithNeeded * (1f-marginFaith))
         {
             //Not enough
             faithState = FAITH_STATE.LACK;
 
-        }else if (faithQuantity > faithneed * (1f + marginFaith))
+        }else if (faithQuantity > faithNeeded * (1f + marginFaith))
         {
             //Starving
-            foodState = FAITH_STATE.FAITHFUL;
+            faithState = FAITH_STATE.FAITHFUL;
         }
     }
 
@@ -209,22 +209,22 @@ public class GameManagerScript : MonoBehaviour
 
     public float getHungerState()
     {
-        return foodState;
+        return (float)foodState/100;
     }
 
     public float getFaithState()
     {
-        return faithState;
+        return (float)faithState/100;
     }
 
     public void updateFaithNeeded()
     {
         float faithneed =0 ;
-        foreach(TowerScript as in activities)
+        foreach(TowerScript ts in towers)
         {
-            faithneed += as.towerTemp.faithneed;
+            faithneed += ts.getFaithNeeded();
         }
-        this.faithneed = faithneed;
+        this.faithNeeded = faithneed;
         this.UpdateFaithState();
     }
 

@@ -46,12 +46,12 @@ public class ActivityScript : MonoBehaviour
             }
         }else if(acTemp.isCultActivity())
         {
-            faith =0;
+            float faith =0;
             foreach(VillagerScript v in villagersList)
             {
                 faith += v.getEfficacity();
             }
-            gm.addFaith(faith  * gm.getHungerState())
+            gm.addFaith(faith * gm.getHungerState());
         }
         
     }
@@ -82,7 +82,9 @@ public class ActivityScript : MonoBehaviour
             return false;
         }else
         {
-            return false;
+            destroy();
+            return true;
+
         }
 
     }
@@ -104,6 +106,11 @@ public class ActivityScript : MonoBehaviour
         {
             Instantiate(acTemp.prefab, gameObject.GetComponent<Transform>().position, Quaternion.identity, gameObject.transform);
         }
+    }
+
+    public void destroy()
+    {
+        Destroy(gameObject);
     }
 
 

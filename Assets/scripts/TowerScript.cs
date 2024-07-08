@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TowerScript : MonoBehaviour
@@ -10,69 +11,159 @@ public class TowerScript : MonoBehaviour
     GameManagerScript gm;
     bool fightMode;
 
-    GameObjet target;
+    public float health;
+
+    GameObject target;
 
     void Start()
     {
         fightMode = false;
+        health = towerTemp.health;
         gm = GameObject.FindWithTag("GameController").GetComponent<GameManagerScript>();
- 
+
+
     }
 
 
     void Update()
     {
         if(!fightMode)
-            handleLookingForFightMode()
+        {
+            handleLookingForFightMode();
+        }
 
+    }
+
+    public float getFaithNeeded()
+    {
+        return towerTemp.faithNeeded;
     }
 
 
     void handleLookingForFightMode()
     {
+
         Vector3 origin = gameObject.transform.position;
 
         Collider[] hitColliders = Physics.OverlapSphere(origin, towerTemp.range, towerTemp.layerTarget);
 
-        var sortedColliders = hitColliders
-            .OrderBy(collider => Vector3.Distance(origin, collider.transform.position))
-            .ToArray();
 
-        if (hitColliders.Length > 0)
-        {
-            target = sortedColliders[0];
-            fightMode = true;
-            StartCoroutine(fightOneTime());
-        }
+
+       if (hitColliders.Length > 0)
+       {
+                Debug.Log("Lancement de l'attaque");
+                target = hitColliders[0].gameObject;
+                fightMode = true;
+                StartCoroutine(fightOneTime());
+       }
+ 
+        
+        
     }
 
     IEnumerator fightOneTime()
-    {     
-        if(isTargetInRange())
+    {
+        Debug.Log("Tour se prépare à attaquer");
+        if (isTargetInRange())
         {
+            //Debug.Log("Ennemie dans la portée");
+
             Vector3 origin = target.transform.position;
 
             Collider[] hitColliders = Physics.OverlapSphere(origin, towerTemp.degatZone, towerTemp.layerTarget);
 
-            foreach(Collider c in hitColliders)
+            foreach (Collider c in hitColliders)
             {
-                if(c.gameObject != target)
+                if (c.gameObject != target)
                 {
-                    c.gameObject.GetComponentInParent<EnnemyScript>().takingDamage(towerTemp.power * gm.getFaithState * 0.5f);
+                    c.gameObject.GetComponentInParent<EnnemyScript>().takingDamage(towerTemp.power * gm.getFaithState() * 0.5f);
                 }
             }
 
-            if(target.GetComponentInParent<EnnemyScript>().takingDamage(towerTemp.power * gm.getFaithState))
+            if (target.GetComponentInParent<EnnemyScript>().takingDamage(towerTemp.power * gm.getFaithState()))
             {
+                target.GetComponentInParent<EnnemyScript>().die();
                 target = null;
                 fightMode = false;
             }
-        }else
+        }
+        else
         {
             target = null;
             fightMode = false;
         }
-        
+
+        if (fightMode)
+        {
+            yield return new WaitForSeconds(towerTemp.speedAttack);
+            StartCoroutine(fightOneTime());
+        }
+
+    }
+
+
+    //IEnumerator fightOneTime()
+    //{
+    //    while (fightMode)
+    //    {
+    //        // Vérifier si la cible est toujours dans la portée
+    //        if (isTargetInRange())
+    //        {
+    //            Vector3 origin = target.transform.position;
+
+    //            Collider[] hitColliders = Physics.OverlapSphere(origin, towerTemp.degatZone, towerTemp.layerTarget);
+
+    //            foreach (Collider c in hitColliders)
+    //            {
+    //                if (c.gameObject != target)
+    //                {
+    //                    c.gameObject.GetComponentInParent<EnnemyScript>().takingDamage(towerTemp.power * gm.getFaithState() * 0.5f);
+    //                }
+    //            }
+
+    //            if (target.GetComponentInParent<EnnemyScript>().takingDamage(towerTemp.power * gm.getFaithState()))
+    //            {
+    //                target.GetComponentInParent<EnnemyScript>().die();
+    //                target = null;
+    //                fightMode = false;
+    //                yield break; // Sortir de la coroutine
+    //            }
+    //        }
+    //        else
+    //        {
+    //            target = null;
+    //            fightMode = false;
+    //            yield break; // Sortir de la coroutine
+    //        }
+
+    //        // Attendre avant la prochaine attaque
+    //        yield return new WaitForSeconds(towerTemp.speedAttack);
+    //    }
+    //}
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, towerTemp.range);
+    }
+
+    public bool takingDamage(float dmg)
+    {
+        Debug.Log("tour prend des dégats : " + dmg + "   Nouvelle vie : " + (health - dmg));
+        health -= dmg;
+        if (health > 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public void die()
+    {
+        Destroy(gameObject);
     }
 
     bool isTargetInRange()
