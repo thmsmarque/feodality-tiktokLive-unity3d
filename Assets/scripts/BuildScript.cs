@@ -10,6 +10,8 @@ public class BuildScript : MonoBehaviour
     GameObject touretPrefab;
 
     GameObject tempBuild;
+    
+    TowerDefenseScript towerOfDefense;
 
     ActivityTemplate actualTemplate;
     TourTemplate tourTemplate;
@@ -29,7 +31,7 @@ public class BuildScript : MonoBehaviour
     void Start()
     {
         buildModeActivity = false;
-        layerToGet = LayerMask.GetMask("Activity","Tower");
+        layerToGet = LayerMask.GetMask("Activity");
         layerToGet = ~layerToGet;
         activityLayer = LayerMask.GetMask("Activity");
 
@@ -40,14 +42,51 @@ public class BuildScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        handlebuildModeActivity();
+        if(buildModeActivity)
+        {
+            handlebuildModeActivity();
+        }
+        if(buildModeTower)
+        {
+            handleBuildModeTouret();
+        }
     }
 
+    void handleBuildModeTouret()
+    {
+         if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                buildModeActivity = false;
+                buildModeTower = false;
+            }
+
+        LayerMask towerMask = LayerMask.GetMask("Tower");
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit,Mathf.Infinity, towerMask))
+            {
+                    if(hit.collider.tag == "Tower")
+                    {
+                        towerOfDefense = hit.collider.gameObject.GetComponent<TowerDefenseScript>();
+                        tempBuild.transform.position = hit.collider.gameObject.GetComponent<TowerDefenseScript>().pointSpawn;
+                    }
+            }
+            if(checkBuildTower() && Input.GetMouseButtonDown(0))
+            {
+                Debug.Log("Lancement Construction...");
+                GameObject tempNewActivity = Instantiate(touretPrefab, tempBuild.transform.position, Quaternion.identity, transform);
+                tempNewActivity.GetComponent<TowerScript>().setTouretTemplate(tourTemplate);
+                gm.addTower(tempNewActivity.GetComponent<TowerScript>());
+                gm.removeMaterials(tourTemplate.coastInMaterials);
+                towerOfDefense.hasTouret = true;
+                towerOfDefense = null;
+
+            }
+    }
 
     void handlebuildModeActivity()
     {
-        if (buildModeActivity || buildModeTower)
-        {
+        
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -59,22 +98,10 @@ public class BuildScript : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit,Mathf.Infinity, layerToGet))
             {
-                if (buildModeActivity)
-                {
                     Vector3 elevatedPosition = hit.point;
                     elevatedPosition.y += actualTemplate.elevatedHeight;
-                    tempBuild.transform.position = elevatedPosition;
-                }else if(buildModeTower)
-                {
-                    if(hit.collider.tag == "Tower")
-                    {
-                        tempBuild.transform.position = hit.collider.gameObject.GetComponentInChildren<Transform>().position;
-                    }
-
-                }
-            }
-            if (buildModeActivity)
-            {
+                    tempBuild.transform.position = elevatedPosition;         
+            }        
                 if (checkBuildActivity())
                 {
                     tempBuild.GetComponent<Renderer>().material.color = Color.green;
@@ -91,28 +118,8 @@ public class BuildScript : MonoBehaviour
                 else
                 {
                     tempBuild.GetComponent<Renderer>().material.color = Color.red;
-
-                }
-            }else if(buildModeTower)
-            {
-                if(checkBuildTower())
-                {
-                    tempBuild.GetComponent<Renderer>().material.color = Color.green;
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        Debug.Log("Lancement Construction...");
-                        GameObject tempNewActivity = Instantiate(touretPrefab, tempBuild.transform.position, Quaternion.identity, transform);
-                        tempNewActivity.GetComponent<TowerScript>().setTouretTemplate(tourTemplate);
-                        gm.addTower(tempNewActivity.GetComponent<TowerScript>());
-                        gm.removeMaterials(tourTemplate.coastInMaterials);
-
-                    }
-                }else
-                {
-                    tempBuild.GetComponent<Renderer>().material.color = Color.red;
-                }
-            }
-        }
+                }        
+        
     }
 
     bool checkBuildActivity()
@@ -123,12 +130,12 @@ public class BuildScript : MonoBehaviour
             return false;
         }
 
-        // Origine de la sphère, souvent la position du joueur ou de l'objet
+        // Origine de la sphï¿½re, souvent la position du joueur ou de l'objet
         Vector3 origin = tempBuild.transform.position;
 
-        // Utiliser Physics.OverlapSphere pour obtenir tous les colliders dans la sphère
+        // Utiliser Physics.OverlapSphere pour obtenir tous les colliders dans la sphï¿½re
         Collider[] hitColliders = Physics.OverlapSphere(origin, radius, activityLayer);
-        // Si la sphère touche un ou plusieurs colliders, retourner false
+        // Si la sphï¿½re touche un ou plusieurs colliders, retourner false
         if (hitColliders.Length > 0)
         {
             foreach (Collider collider in hitColliders)
@@ -144,38 +151,25 @@ public class BuildScript : MonoBehaviour
             return true;
         }
 
-        // Si la sphère ne touche aucun collider, retourner true
+        // Si la sphï¿½re ne touche aucun collider, retourner true
         return true;
     }
 
     bool checkBuildTower()
     {
+        if(towerOfDefense == null)
+        {
+            return false;
+        }
         
             if (tourTemplate.coastInMaterials > gm.materials)
             {
                 return false;
             }
-        
-
-        // Origine de la sphère, souvent la position du joueur ou de l'objet
-        Vector3 origin = tempBuild.transform.position;
-        LayerMask towerMask = LayerMask.GetMask("Tower","Activity");
-        // Utiliser Physics.OverlapSphere pour obtenir tous les colliders dans la sphère
-        Collider[] hitColliders = Physics.OverlapSphere(origin, 0.5f, towerMask);
-        // Si la sphère touche un ou plusieurs colliders, retourner false
-        if (hitColliders.Length > 0)
-        {
-            foreach (Collider collider in hitColliders)
+            if(towerOfDefense.hasTouret)
             {
-                if (collider.gameObject != tempBuild)
-                {
-                    return false;
-                }
+                return false;
             }
-        }
-     
-
-        // Si la sphère ne touche aucun collider, retourner true
         return true;
     }
 

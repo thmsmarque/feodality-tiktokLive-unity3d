@@ -102,45 +102,6 @@ public class TowerScript : MonoBehaviour
     }
 
 
-    //IEnumerator fightOneTime()
-    //{
-    //    while (fightMode)
-    //    {
-    //        // Vérifier si la cible est toujours dans la portée
-    //        if (isTargetInRange())
-    //        {
-    //            Vector3 origin = target.transform.position;
-
-    //            Collider[] hitColliders = Physics.OverlapSphere(origin, towerTemp.degatZone, towerTemp.layerTarget);
-
-    //            foreach (Collider c in hitColliders)
-    //            {
-    //                if (c.gameObject != target)
-    //                {
-    //                    c.gameObject.GetComponentInParent<EnnemyScript>().takingDamage(towerTemp.power * gm.getFaithState() * 0.5f);
-    //                }
-    //            }
-
-    //            if (target.GetComponentInParent<EnnemyScript>().takingDamage(towerTemp.power * gm.getFaithState()))
-    //            {
-    //                target.GetComponentInParent<EnnemyScript>().die();
-    //                target = null;
-    //                fightMode = false;
-    //                yield break; // Sortir de la coroutine
-    //            }
-    //        }
-    //        else
-    //        {
-    //            target = null;
-    //            fightMode = false;
-    //            yield break; // Sortir de la coroutine
-    //        }
-
-    //        // Attendre avant la prochaine attaque
-    //        yield return new WaitForSeconds(towerTemp.speedAttack);
-    //    }
-    //}
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
