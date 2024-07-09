@@ -12,6 +12,7 @@ public class TourTemplate : ScriptableObject
     public float faithNeeded;
     public float degatZone;
     public float health;
+    public float coastInMaterials;
 
     public LayerMask layerTarget; 
 }

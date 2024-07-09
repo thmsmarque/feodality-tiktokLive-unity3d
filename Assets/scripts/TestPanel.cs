@@ -12,7 +12,8 @@ public class TestPanel : MonoBehaviour
 
     public ActivityTemplate[] foodActivities;
     public ActivityTemplate[] materialsActivities;
-    public ActivityTemplate[] defenseActivities; 
+    public ActivityTemplate[] defenseActivities;
+    public TourTemplate[] tours; 
     private void Start()
     {
        gm = GameObject.FindWithTag("GameController");
@@ -62,16 +63,21 @@ public class TestPanel : MonoBehaviour
 
     public void construcChamp()
     {
-        gm.GetComponent<BuildScript>().startCoroutineBuildMode(foodActivities[0]);
+        gm.GetComponent<BuildScript>().startCoroutinebuildMode(foodActivities[0]);
     }
 
     public void construcArbre()
     {
-        gm.GetComponent<BuildScript>().startCoroutineBuildMode(materialsActivities[0]);
+        gm.GetComponent<BuildScript>().startCoroutinebuildMode(materialsActivities[0]);
     }
 
     public void construcTour()
     {
-        gm.GetComponent<BuildScript>().startCoroutineBuildMode(defenseActivities[0]);
+        gm.GetComponent<BuildScript>().startCoroutinebuildMode(defenseActivities[0]);
+    }
+
+    public void construcTouret()
+    {
+        gm.GetComponent<BuildScript>().startCoroutinebuildMode(tours[0]);
     }
 }

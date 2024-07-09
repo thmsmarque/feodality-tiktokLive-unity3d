@@ -172,4 +172,13 @@ public class TowerScript : MonoBehaviour
         float distanceToTarget = Vector3.Distance(transform.position, target.gameObject.transform.position);
         return distanceToTarget <= towerTemp.range;
     }
+
+    public void setTouretTemplate(TourTemplate t)
+    {
+        towerTemp = t;
+        if (towerTemp.prefab != null)
+        {
+            Instantiate(towerTemp.prefab, gameObject.GetComponent<Transform>().position, Quaternion.identity, gameObject.transform);
+        }
+    }
 }

@@ -6,12 +6,16 @@ public class BuildScript : MonoBehaviour
 {
     [SerializeField]
     GameObject activityPrefab;
+    [SerializeField]
+    GameObject touretPrefab;
 
     GameObject tempBuild;
 
     ActivityTemplate actualTemplate;
+    TourTemplate tourTemplate;
 
-    public bool buildMode;
+    public bool buildModeActivity;
+    public bool buildModeTower;
 
     public float radius = 1f;
 
@@ -24,8 +28,8 @@ public class BuildScript : MonoBehaviour
 
     void Start()
     {
-        buildMode = false;
-        layerToGet = LayerMask.GetMask("Activity");
+        buildModeActivity = false;
+        layerToGet = LayerMask.GetMask("Activity","Tower");
         layerToGet = ~layerToGet;
         activityLayer = LayerMask.GetMask("Activity");
 
@@ -36,51 +40,82 @@ public class BuildScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        handleBuildMode();
+        handlebuildModeActivity();
     }
 
 
-    void handleBuildMode()
+    void handlebuildModeActivity()
     {
-        if (buildMode)
+        if (buildModeActivity || buildModeTower)
         {
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                buildMode = false;
+                buildModeActivity = false;
+                buildModeTower = false;
             }
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit,Mathf.Infinity, layerToGet))
             {
-                Vector3 elevatedPosition = hit.point;
-                elevatedPosition.y += actualTemplate.elevatedHeight;
-                tempBuild.transform.position = elevatedPosition;
-            }
-
-            if (checkBuild())
-            {
-                tempBuild.GetComponent<Renderer>().material.color = Color.green;
-                if(Input.GetMouseButtonDown(0))
+                if (buildModeActivity)
                 {
-                    Debug.Log("Lancement Construction...");
-                    GameObject tempNewActivity = Instantiate(activityPrefab, tempBuild.transform.position, Quaternion.identity, transform);
-                    tempNewActivity.GetComponent<ActivityScript>().setActivityTemplate(actualTemplate);
-                    gm.addActivity(tempNewActivity.GetComponent<ActivityScript>());
-                    gm.removeMaterials(actualTemplate.costInMaterials);
-                    
+                    Vector3 elevatedPosition = hit.point;
+                    elevatedPosition.y += actualTemplate.elevatedHeight;
+                    tempBuild.transform.position = elevatedPosition;
+                }else if(buildModeTower)
+                {
+                    if(hit.collider.tag == "Tower")
+                    {
+                        tempBuild.transform.position = hit.collider.gameObject.GetComponentInChildren<Transform>().position;
+                    }
+
                 }
             }
-            else
+            if (buildModeActivity)
             {
-                tempBuild.GetComponent<Renderer>().material.color = Color.red;
+                if (checkBuildActivity())
+                {
+                    tempBuild.GetComponent<Renderer>().material.color = Color.green;
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        Debug.Log("Lancement Construction...");
+                        GameObject tempNewActivity = Instantiate(activityPrefab, tempBuild.transform.position, Quaternion.identity, transform);
+                        tempNewActivity.GetComponent<ActivityScript>().setActivityTemplate(actualTemplate);
+                        gm.addActivity(tempNewActivity.GetComponent<ActivityScript>());
+                        gm.removeMaterials(actualTemplate.costInMaterials);
 
+                    }
+                }
+                else
+                {
+                    tempBuild.GetComponent<Renderer>().material.color = Color.red;
+
+                }
+            }else if(buildModeTower)
+            {
+                if(checkBuildTower())
+                {
+                    tempBuild.GetComponent<Renderer>().material.color = Color.green;
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        Debug.Log("Lancement Construction...");
+                        GameObject tempNewActivity = Instantiate(touretPrefab, tempBuild.transform.position, Quaternion.identity, transform);
+                        tempNewActivity.GetComponent<TowerScript>().setTouretTemplate(tourTemplate);
+                        gm.addTower(tempNewActivity.GetComponent<TowerScript>());
+                        gm.removeMaterials(tourTemplate.coastInMaterials);
+
+                    }
+                }else
+                {
+                    tempBuild.GetComponent<Renderer>().material.color = Color.red;
+                }
             }
         }
     }
 
-    bool checkBuild()
+    bool checkBuildActivity()
     {
 
         if(actualTemplate.costInMaterials > gm.materials)
@@ -113,6 +148,37 @@ public class BuildScript : MonoBehaviour
         return true;
     }
 
+    bool checkBuildTower()
+    {
+        
+            if (tourTemplate.coastInMaterials > gm.materials)
+            {
+                return false;
+            }
+        
+
+        // Origine de la sphère, souvent la position du joueur ou de l'objet
+        Vector3 origin = tempBuild.transform.position;
+        LayerMask towerMask = LayerMask.GetMask("Tower","Activity");
+        // Utiliser Physics.OverlapSphere pour obtenir tous les colliders dans la sphère
+        Collider[] hitColliders = Physics.OverlapSphere(origin, 0.5f, towerMask);
+        // Si la sphère touche un ou plusieurs colliders, retourner false
+        if (hitColliders.Length > 0)
+        {
+            foreach (Collider collider in hitColliders)
+            {
+                if (collider.gameObject != tempBuild)
+                {
+                    return false;
+                }
+            }
+        }
+     
+
+        // Si la sphère ne touche aucun collider, retourner true
+        return true;
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -120,13 +186,21 @@ public class BuildScript : MonoBehaviour
     }
 
 
-    public void startCoroutineBuildMode(ActivityTemplate temp)
+    public void startCoroutinebuildMode(ActivityTemplate temp)
     {
-        StartCoroutine(startBuildMode(temp));
+        StartCoroutine(startbuildMode(temp));
         actualTemplate = temp;
+        tourTemplate = null;
     }
 
-    IEnumerator startBuildMode(ActivityTemplate template)
+    public void startCoroutinebuildMode(TourTemplate temp)
+    {
+        StartCoroutine(startbuildMode(temp));
+        tourTemplate = temp;
+        actualTemplate = null;
+    }
+
+    public IEnumerator startbuildMode(ActivityTemplate template)
     {
         if(tempBuild != null)
         {
@@ -135,9 +209,30 @@ public class BuildScript : MonoBehaviour
 
         tempBuild = Instantiate(template.prefab, transform);
 
-        buildMode = true;
-        yield return new WaitWhile(()=>buildMode);
-        buildMode = false;
+        buildModeTower = false;
+        buildModeActivity = true;
+        yield return new WaitWhile(()=>buildModeActivity);
+        buildModeActivity = false;
+        buildModeTower = false;
+
+        Destroy(tempBuild);
+    }
+
+    public IEnumerator startbuildMode(TourTemplate template)
+    {
+        if (tempBuild != null)
+        {
+            Destroy(tempBuild);
+        }
+
+        tempBuild = Instantiate(template.prefab, transform);
+
+        buildModeActivity = false;
+        buildModeTower = true;
+        yield return new WaitWhile(() => buildModeTower);
+        buildModeActivity = false;
+        buildModeTower = false;
+
         Destroy(tempBuild);
     }
 }

@@ -8,6 +8,7 @@ TagManager:
   - Activity
   - Floor
   - Nexus
+  - Tower
   layers:
   - Default
   - TransparentFX

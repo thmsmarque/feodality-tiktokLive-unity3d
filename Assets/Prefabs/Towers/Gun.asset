@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32e68f798c0449459ec83b5039e97ee, type: 3}
   m_Name: Gun
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
+  prefab: {fileID: 5315885575303912311, guid: 768d29cd8d6a80d428e4bf22a4387245, type: 3}
   speedAttack: 0.5
-  power: 1
+  power: 10
   range: 7
   faithNeeded: 1
   degatZone: 2
   health: 2
+  coastInMaterials: 5
   layerTarget:
     serializedVersion: 2
     m_Bits: 512
