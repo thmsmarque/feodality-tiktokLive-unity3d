@@ -14,6 +14,7 @@ public class EnnemyScript : MonoBehaviour
 
     public float health;
 
+    [SerializeField]
     GameObject target;
     bool fight;
 
@@ -63,6 +64,7 @@ public class EnnemyScript : MonoBehaviour
                 {
                     fight = true;
                     target = sortedColliders[0].gameObject;
+                    //sortedColliders[0].gameObject.GetComponent<ActivityScript>().addEnnemy(this);
                     nav.SetDestination(target.transform.position);
                 }
             }
@@ -97,7 +99,7 @@ public class EnnemyScript : MonoBehaviour
 
     }
 
-    void hasDestroyActivity()
+    public void hasDestroyActivity()
     {
         target = null;
         fight = false;
@@ -113,7 +115,7 @@ public class EnnemyScript : MonoBehaviour
 
     public bool takingDamage(float dmg)
     {
-        Debug.Log("prend des dégats : " + dmg + "   Nouvelle vie : " + (health - dmg));
+        //Debug.Log("prend des dégats : " + dmg + "   Nouvelle vie : " + (health - dmg));
         health -= dmg;
         if(health > 0 )
         {

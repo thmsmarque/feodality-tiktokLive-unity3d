@@ -51,7 +51,7 @@ public class TowerScript : MonoBehaviour
 
        if (hitColliders.Length > 0)
        {
-                Debug.Log("Lancement de l'attaque");
+                //Debug.Log("Lancement de l'attaque");
                 target = hitColliders[0].gameObject;
                 fightMode = true;
                 StartCoroutine(fightOneTime());
@@ -63,7 +63,7 @@ public class TowerScript : MonoBehaviour
 
     IEnumerator fightOneTime()
     {
-        Debug.Log("Tour se prépare à attaquer");
+        //Debug.Log("Tour se prépare à attaquer");
         if (isTargetInRange())
         {
             //Debug.Log("Ennemie dans la portée");
@@ -110,7 +110,7 @@ public class TowerScript : MonoBehaviour
 
     public bool takingDamage(float dmg)
     {
-        Debug.Log("tour prend des dégats : " + dmg + "   Nouvelle vie : " + (health - dmg));
+        //Debug.Log("tour prend des dégats : " + dmg + "   Nouvelle vie : " + (health - dmg));
         health -= dmg;
         if (health > 0)
         {
@@ -118,12 +118,14 @@ public class TowerScript : MonoBehaviour
         }
         else
         {
+
             return true;
         }
     }
 
     public void die()
     {
+        gm.removeTower(this);
         Destroy(gameObject);
     }
 

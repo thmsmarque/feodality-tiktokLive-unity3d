@@ -7,12 +7,14 @@ public class TowerDefenseScript : MonoBehaviour
 {
     public Transform pointSpawn;
 
-    pulic bool hasTouret;
+    public bool hasTouret;
+
+    [SerializeField]
     TowerScript touret;
 
     void Start()
     {
-        pointSpawn = GetComponentInChildren<Transform>();
+        //pointSpawn = GetComponentInChildren<Transform>();
         hasTouret = false;
     }
 
@@ -24,7 +26,7 @@ public class TowerDefenseScript : MonoBehaviour
 
     public void removeTouret()
     {
-        Remove(touret);
+        Destroy(touret);
         hasTouret = false;
     }
 

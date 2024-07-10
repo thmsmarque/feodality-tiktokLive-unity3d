@@ -6,6 +6,7 @@ public class ActivityScript : MonoBehaviour
 {
     public ActivityTemplate acTemp;
     public List<VillagerScript> villagersList = new List<VillagerScript>();
+    public List<EnnemyScript> ennemiesList = new List<EnnemyScript>();
 
     public float health;
 
@@ -68,6 +69,17 @@ public class ActivityScript : MonoBehaviour
             this.villagersList.Remove(b);
     }
 
+    public void addEnnemy(EnnemyScript b)
+    {
+        this.ennemiesList.Add(b);
+    }
+
+    public void removeEnnemy(EnnemyScript b)
+    {
+        if (this.ennemiesList.Contains(b))
+            this.ennemiesList.Remove(b);
+    }
+
     /// <summary>
     /// Remove health from activity
     /// </summary>
@@ -75,7 +87,7 @@ public class ActivityScript : MonoBehaviour
     /// <returns>If health<=0 return true else return false</returns>
     public bool removeHealth(float dmg)
     {
-        Debug.Log("Vie retir�e : " + dmg + "   Vie : " + health) ;
+        //Debug.Log("Vie retir�e : " + dmg + "   Vie : " + health) ;
         this.health -= dmg;
         if(health > 0)
         {
@@ -110,8 +122,16 @@ public class ActivityScript : MonoBehaviour
 
     public void destroy()
     {
+        villagersList.Clear();
+        foreach (EnnemyScript v in ennemiesList)
+        {
+            v.hasDestroyActivity();
+        }
+        ennemiesList.Clear();
+        gm.removeActitvity(this);
         Destroy(gameObject);
     }
+
 
 
 }

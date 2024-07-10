@@ -11,6 +11,7 @@ public class BuildScript : MonoBehaviour
 
     GameObject tempBuild;
     
+    [SerializeField]
     TowerDefenseScript towerOfDefense;
 
     ActivityTemplate actualTemplate;
@@ -58,23 +59,25 @@ public class BuildScript : MonoBehaviour
             {
                 buildModeActivity = false;
                 buildModeTower = false;
+            towerOfDefense = null;
             }
 
-        LayerMask towerMask = LayerMask.GetMask("Tower");
+        LayerMask towerMask = LayerMask.GetMask("Activity");
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit,Mathf.Infinity, towerMask))
             {
+            Debug.Log("Tag du collider : " + hit.collider.tag);
                     if(hit.collider.tag == "Tower")
                     {
                         towerOfDefense = hit.collider.gameObject.GetComponent<TowerDefenseScript>();
-                        tempBuild.transform.position = hit.collider.gameObject.GetComponent<TowerDefenseScript>().pointSpawn;
+                        tempBuild.transform.position = hit.collider.gameObject.GetComponent<TowerDefenseScript>().pointSpawn.position;
                     }
             }
             if(checkBuildTower() && Input.GetMouseButtonDown(0))
             {
                 Debug.Log("Lancement Construction...");
-                GameObject tempNewActivity = Instantiate(touretPrefab, tempBuild.transform.position, Quaternion.identity, transform);
+            GameObject tempNewActivity = Instantiate(touretPrefab, tempBuild.transform.position, Quaternion.identity, hit.collider.gameObject.transform) ;
                 tempNewActivity.GetComponent<TowerScript>().setTouretTemplate(tourTemplate);
                 gm.addTower(tempNewActivity.GetComponent<TowerScript>());
                 gm.removeMaterials(tourTemplate.coastInMaterials);

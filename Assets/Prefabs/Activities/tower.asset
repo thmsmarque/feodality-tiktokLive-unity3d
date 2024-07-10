@@ -19,3 +19,4 @@ MonoBehaviour:
   multiplierEfficacity: 0
   costInMaterials: 150
   elevatedHeight: 2
+  health: 10

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 545912044684015417}
   - component: {fileID: 6058649192051594770}
   - component: {fileID: 3247751144685001059}
+  - component: {fileID: -4325844997107364521}
   m_Layer: 6
   m_Name: Tower
   m_TagString: Tower
@@ -123,6 +124,20 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &-4325844997107364521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4775534788634644683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 727a9acb8e2259a42b605d2fb455465e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointSpawn: {fileID: 7074624784213422594}
+  hasTouret: 0
 --- !u!1 &8652304052513330567
 GameObject:
   m_ObjectHideFlags: 0
