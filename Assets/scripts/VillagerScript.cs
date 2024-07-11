@@ -113,4 +113,10 @@ public class VillagerScript : MonoBehaviour
     {
         this.nameOfVillager = name;
     }
+
+    public void changeDestination(Vector3 dest)
+    {
+        Debug.Log("Nouvelle destination du villageois");
+        navMeshAgent.SetDestination(dest);
+    }
 }

@@ -7,6 +7,8 @@ public class ActivityScript : MonoBehaviour
     public ActivityTemplate acTemp;
     public List<VillagerScript> villagersList = new List<VillagerScript>();
     public List<EnnemyScript> ennemiesList = new List<EnnemyScript>();
+    public Transform[] placeToWork;
+    public VillagerScript[] hasAVillager;
 
     public float health;
 
@@ -16,6 +18,7 @@ public class ActivityScript : MonoBehaviour
     {
         health = acTemp.health;
        gm = GameObject.FindWithTag("GameController").GetComponent<GameManagerScript>();
+
        
     }
 
@@ -26,7 +29,7 @@ public class ActivityScript : MonoBehaviour
             float food = 0;
             foreach (VillagerScript v in villagersList)
             {
-                food += v.getEfficacity();
+                food += v.getEfficacity() * acTemp.multiplierEfficacity;
             }
             gm.addFood(food);
         } else if (acTemp.isMaterialsActivity())
@@ -35,7 +38,7 @@ public class ActivityScript : MonoBehaviour
             float materials = 0f;
             foreach (VillagerScript v in villagersList)
             {
-                materials += v.getEfficacity() * 0.1f;
+                materials += v.getEfficacity() * 0.1f * acTemp.multiplierEfficacity;
             }
             gm.addMaterials(materials  * gm.getHungerState());
             
@@ -50,7 +53,7 @@ public class ActivityScript : MonoBehaviour
             float faith =0;
             foreach(VillagerScript v in villagersList)
             {
-                faith += v.getEfficacity();
+                faith += v.getEfficacity() * acTemp.multiplierEfficacity;
             }
             gm.addFaith(faith * gm.getHungerState());
         }
@@ -60,13 +63,37 @@ public class ActivityScript : MonoBehaviour
 
     public void addVillager(VillagerScript b)
     {
-        this.villagersList.Add(b);
+        if (villagersList.Count < acTemp.capacity)
+        {
+            this.villagersList.Add(b);
+            for(int i = 0; i<placeToWork.Length; i++)
+            {
+                Debug.Log("tour du placeToWork");
+                if (hasAVillager[i] == null)
+                {
+                    Debug.Log("HasAVillager passed");
+                    b.changeDestination(placeToWork[i].position);
+                    hasAVillager[i] = b;
+                    break;
+                }
+            }
+        }
     }
 
     public void removeVillager(VillagerScript b)
     {
-        if(this.villagersList.Contains(b))
+        if (this.villagersList.Contains(b))
+        {
+            for(int i = 0; i<placeToWork.Length; i++)
+            {
+                if(hasAVillager[i] == b)
+                {
+                    hasAVillager[i] = null;
+                }
+            }
             this.villagersList.Remove(b);
+
+        }
     }
 
     public void addEnnemy(EnnemyScript b)
@@ -116,7 +143,34 @@ public class ActivityScript : MonoBehaviour
         this.acTemp = ac;
         if (acTemp.prefab != null)
         {
-            Instantiate(acTemp.prefab, gameObject.GetComponent<Transform>().position, Quaternion.identity, gameObject.transform);
+            GameObject temp = Instantiate(acTemp.prefab, gameObject.GetComponent<Transform>().position, Quaternion.identity, gameObject.transform);
+            Transform[] trans = GetComponentsInChildren<Transform>();
+            
+
+            int nbPlace = 0;
+            foreach(Transform t in trans)
+            {
+                if(t.CompareTag("Place"))
+                {
+                    nbPlace++;
+                }
+            }
+
+            placeToWork = new Transform[nbPlace];
+            hasAVillager = new VillagerScript[nbPlace];
+
+            nbPlace = 0;
+
+            for (int i = 0; i < trans.Length; i++)
+            {
+                if (trans[i].gameObject.tag == "Place")
+                {
+                    placeToWork[nbPlace] = trans[i];
+                    hasAVillager[nbPlace] = null;
+                    nbPlace++;
+
+                }
+            }
         }
     }
 

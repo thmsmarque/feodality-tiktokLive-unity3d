@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Gnome
   m_EditorClassIdentifier: 
   prefab: {fileID: 0}
-  rangeOfSearch: 3
+  rangeOfSearch: 5
   rangeOfAttack: 3
-  power: 10
+  power: 2
   speedAttack: 1
   speed: 2.5
-  health: 50
+  health: 12
   layerTarget:
     serializedVersion: 2
     m_Bits: 192

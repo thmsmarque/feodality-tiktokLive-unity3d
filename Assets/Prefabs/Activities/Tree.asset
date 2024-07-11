@@ -15,8 +15,8 @@ MonoBehaviour:
   name: Tree
   activityType: 1
   prefab: {fileID: 7167030214317060503, guid: c01b7ad30018f1443b3aac74c4d8eada, type: 3}
-  capacity: 5
-  multiplierEfficacity: 0
+  capacity: 1
+  multiplierEfficacity: 1
   costInMaterials: 0
   elevatedHeight: 2
   health: 50

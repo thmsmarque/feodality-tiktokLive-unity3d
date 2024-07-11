@@ -426,5 +426,11 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
+    public void hasLost()
+    {
+        //Logique de défaite
+        Debug.Log("A perdu!");
+    }
+
 
 }

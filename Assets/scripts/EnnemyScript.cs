@@ -9,6 +9,7 @@ public class EnnemyScript : MonoBehaviour
     [SerializeField]
     EnnemyTemplate typeOfEnnemy;
 
+    [SerializeField]
     GameObject Nexus;
     NavMeshAgent nav;
 
@@ -35,6 +36,12 @@ public class EnnemyScript : MonoBehaviour
         {
             
             handleSearchingForFight();
+        }else
+        {
+            if(target == null || target.Equals(null))
+            {
+                hasDestroyActivity();
+            }
         }
     }
 
@@ -86,13 +93,20 @@ public class EnnemyScript : MonoBehaviour
         yield return new WaitUntil(() => isTargetInRange());
         Debug.Log("Dans la port�e d'attaque");
         nav.SetDestination(transform.position);
-        
-        if(target.GetComponentInParent<ActivityScript>().removeHealth(typeOfEnnemy.power))
+        if (target != Nexus)
         {
-            hasDestroyActivity();
-        }
-        else
+            if (target.GetComponentInParent<ActivityScript>().removeHealth(typeOfEnnemy.power))
+            {
+                hasDestroyActivity();
+            }
+            else
+            {
+                yield return new WaitForSeconds(typeOfEnnemy.speedAttack);
+                StartCoroutine(fightOneTime());
+            }
+        }else
         {
+            Nexus.GetComponent<NexusScript>().takingDamage(typeOfEnnemy.power * 0.5f);
             yield return new WaitForSeconds(typeOfEnnemy.speedAttack);
             StartCoroutine(fightOneTime());
         }
@@ -131,4 +145,8 @@ public class EnnemyScript : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void changeDestination(Transform dest)
+    {
+        nav.SetDestination(dest.position);
+    }
 }
