@@ -18,6 +18,7 @@ public class ActivityTemplate : ScriptableObject
     public float multiplierEfficacity;
     public float costInMaterials;
 
+    public Vector3 sizeOfCollider;
     public float elevatedHeight = 0f;
 
     public float health;

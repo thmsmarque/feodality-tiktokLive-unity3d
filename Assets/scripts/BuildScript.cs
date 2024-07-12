@@ -76,9 +76,10 @@ public class BuildScript : MonoBehaviour
             }
             if(checkBuildTower() && Input.GetMouseButtonDown(0))
             {
-                Debug.Log("Lancement Construction...");
+                Debug.Log("Lancement Construction tour...");
             GameObject tempNewActivity = Instantiate(touretPrefab, tempBuild.transform.position, Quaternion.identity, hit.collider.gameObject.transform) ;
                 tempNewActivity.GetComponent<TowerScript>().setTouretTemplate(tourTemplate);
+            hit.collider.GetComponent<TowerDefenseScript>().newTouret(tempNewActivity.GetComponent<TowerScript>());
                 gm.addTower(tempNewActivity.GetComponent<TowerScript>());
                 gm.removeMaterials(tourTemplate.coastInMaterials);
                 towerOfDefense.hasTouret = true;

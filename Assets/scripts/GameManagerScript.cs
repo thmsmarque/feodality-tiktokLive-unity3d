@@ -219,6 +219,7 @@ public class GameManagerScript : MonoBehaviour
 
     public void updateFaithNeeded()
     {
+        Debug.Log("Mise à jour de la foi nécessaire");
         float faithneed =0 ;
         foreach(TowerScript ts in towers)
         {

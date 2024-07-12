@@ -18,7 +18,7 @@ public class ActivityScript : MonoBehaviour
     {
         health = acTemp.health;
        gm = GameObject.FindWithTag("GameController").GetComponent<GameManagerScript>();
-
+        GetComponent<BoxCollider>().size = acTemp.sizeOfCollider;
        
     }
 

@@ -8,6 +8,7 @@ public class TowerScript : MonoBehaviour
     [SerializeField]
     TourTemplate towerTemp;
 
+    [SerializeField]
     GameManagerScript gm;
     bool fightMode;
 
@@ -138,10 +139,13 @@ public class TowerScript : MonoBehaviour
 
     public void setTouretTemplate(TourTemplate t)
     {
+        Debug.Log("Set touret Template");
         towerTemp = t;
         if (towerTemp.prefab != null)
         {
             Instantiate(towerTemp.prefab, gameObject.GetComponent<Transform>().position, Quaternion.identity, gameObject.transform);
         }
+        gm.addTower(this);
+        gm.updateFaithNeeded();
     }
 }

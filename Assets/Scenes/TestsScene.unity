@@ -2936,7 +2936,7 @@ MonoBehaviour:
   foodNeeded: 0
   faithQuantity: 0
   faithNeeded: 0
-  materials: 50
+  materials: 5000
   marginFood: 0.25
   marginFaith: 0.25
   multiplierFoodNeededByStrongness: 0.1

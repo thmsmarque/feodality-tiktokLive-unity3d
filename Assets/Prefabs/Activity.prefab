@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1660094845180925762}
   - component: {fileID: 1877707206317750956}
-  - component: {fileID: 6763764320250045360}
+  - component: {fileID: -2541463511174579240}
   m_Layer: 0
   m_Name: Activity
   m_TagString: Activity
@@ -47,9 +47,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   acTemp: {fileID: 0}
   villagersList: []
+  ennemiesList: []
+  placeToWork: []
+  hasAVillager: []
+  health: 0
   gm: {fileID: 0}
---- !u!136 &6763764320250045360
-CapsuleCollider:
+--- !u!65 &-2541463511174579240
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -66,8 +70,6 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2.09
-  m_Direction: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}

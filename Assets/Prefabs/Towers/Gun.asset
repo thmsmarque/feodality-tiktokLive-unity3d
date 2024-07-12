@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 5315885575303912311, guid: 768d29cd8d6a80d428e4bf22a4387245, type: 3}
   speedAttack: 0.5
-  power: 2
+  power: 5
   range: 7
   faithNeeded: 1
   degatZone: 2

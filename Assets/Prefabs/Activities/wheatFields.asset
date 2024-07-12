@@ -18,5 +18,6 @@ MonoBehaviour:
   capacity: 2
   multiplierEfficacity: 1
   costInMaterials: 5
+  sizeOfCollider: {x: 2, y: 1, z: 3}
   elevatedHeight: 0
   health: 0
