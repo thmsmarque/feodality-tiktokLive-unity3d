@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class FaithPassifScript : MonoBehaviour
 {
-    //LayerMask players = LayerMask.GetMask("Player");
+    LayerMask players;
     [SerializeField]
     FaithPassifTemplate temp;
+
+    private void Start()
+    {
+        players = LayerMask.GetMask("Player");
+    }
 
     public float getFaithGenerated()
     {
@@ -38,6 +43,6 @@ public class FaithPassifScript : MonoBehaviour
     {
         Vector3 origin = transform.position;
 
-        return Physics.OverlapSphere(origin, temp.rangeOfAction);
+        return Physics.OverlapSphere(origin, temp.rangeOfAction, players);
     }
 }
