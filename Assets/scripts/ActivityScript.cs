@@ -51,10 +51,8 @@ public class ActivityScript : MonoBehaviour
         }else if(acTemp.isCultActivity())
         {
             float faith =0;
-            foreach(VillagerScript v in villagersList)
-            {
-                faith += v.getEfficacity() * acTemp.multiplierEfficacity;
-            }
+            FaithPassifScript ps = GetComponentInChildren<FaithPassifScript>();
+            faith += ps.getFaithGenerated();
             gm.addFaith(faith * gm.getHungerState());
         }
         

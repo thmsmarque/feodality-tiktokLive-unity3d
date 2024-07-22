@@ -16,9 +16,11 @@ public class BuildScript : MonoBehaviour
 
     ActivityTemplate actualTemplate;
     TourTemplate tourTemplate;
+    FaithPassifTemplate faithTemplate;
 
     public bool buildModeActivity;
     public bool buildModeTower;
+    public bool buildModeFaith;
 
     public float radius = 1f;
 
@@ -51,16 +53,47 @@ public class BuildScript : MonoBehaviour
         {
             handleBuildModeTouret();
         }
+        //if(buildModeFaith)
+        //{
+        //    handleBuildModeFaith();
+        //}
     }
+
+    /*void handleBuildModeFaith()
+    {
+        handleLeavingBuildMode();
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToGet))
+        {
+            Vector3 elevatedPosition = hit.point;
+            elevatedPosition.y += actualTemplate.elevatedHeight;
+            tempBuild.transform.position = elevatedPosition;
+        }
+        if (checkBuildActivity())
+        {
+            tempBuild.GetComponent<Renderer>().material.color = Color.green;
+            if (Input.GetMouseButtonDown(0))
+            {
+                Debug.Log("Lancement Construction...");
+                GameObject tempNewActivity = Instantiate(activityPrefab, tempBuild.transform.position, Quaternion.identity, transform);
+                tempNewActivity.GetComponent<ActivityScript>().setActivityTemplate(actualTemplate);
+                gm.addActivity(tempNewActivity.GetComponent<ActivityScript>());
+                gm.removeMaterials(actualTemplate.costInMaterials);
+
+            }
+        }
+        else
+        {
+            tempBuild.GetComponent<Renderer>().material.color = Color.red;
+        }
+
+    }*/
 
     void handleBuildModeTouret()
     {
-         if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                buildModeActivity = false;
-                buildModeTower = false;
-            towerOfDefense = null;
-            }
+        handleLeavingBuildMode();
 
         LayerMask towerMask = LayerMask.GetMask("Activity");
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -74,29 +107,27 @@ public class BuildScript : MonoBehaviour
                         tempBuild.transform.position = hit.collider.gameObject.GetComponent<TowerDefenseScript>().pointSpawn.position;
                     }
             }
-            if(checkBuildTower() && Input.GetMouseButtonDown(0))
+            if(checkBuildTower())
+            {
+            if(Input.GetMouseButtonDown(0))
             {
                 Debug.Log("Lancement Construction tour...");
-            GameObject tempNewActivity = Instantiate(touretPrefab, tempBuild.transform.position, Quaternion.identity, hit.collider.gameObject.transform) ;
+                GameObject tempNewActivity = Instantiate(touretPrefab, tempBuild.transform.position, Quaternion.identity, hit.collider.gameObject.transform);
                 tempNewActivity.GetComponent<TowerScript>().setTouretTemplate(tourTemplate);
-            hit.collider.GetComponent<TowerDefenseScript>().newTouret(tempNewActivity.GetComponent<TowerScript>());
+                towerOfDefense.newTouret(tempNewActivity.GetComponent<TowerScript>());
                 gm.addTower(tempNewActivity.GetComponent<TowerScript>());
+                gm.updateFaithNeeded();
                 gm.removeMaterials(tourTemplate.coastInMaterials);
-                towerOfDefense.hasTouret = true;
                 towerOfDefense = null;
-
+            }
             }
     }
 
     void handlebuildModeActivity()
     {
-        
 
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                buildModeActivity = false;
-                buildModeTower = false;
-            }
+
+        handleLeavingBuildMode();
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -177,10 +208,31 @@ public class BuildScript : MonoBehaviour
         return true;
     }
 
+    //bool checkBuildPassifFaith()
+    //{
+    //    if (faithTemplate.cost > gm.materials)
+    //    {
+    //        return false;
+    //    }else
+    //    {
+    //        return true;
+    //    }
+    //}
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(tempBuild.transform.position, radius);
+    }
+
+    void handleLeavingBuildMode()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            buildModeActivity = false;
+            buildModeTower = false;
+            towerOfDefense = null;
+        }
     }
 
 

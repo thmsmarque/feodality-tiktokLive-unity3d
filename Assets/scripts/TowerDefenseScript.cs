@@ -20,6 +20,7 @@ public class TowerDefenseScript : MonoBehaviour
 
     public void newTouret(TowerScript tw)
     {
+        Debug.Log("Ajout d'une tourelle à la tour");
         touret = tw;
         hasTouret = true;
     }

@@ -129,12 +129,19 @@ public class GameManagerScript : MonoBehaviour
         {
             a.react();
         }
+        UpdateFaithQuantity();
         updateFoodState();
         UpdateFaithState();
+        
         yield return new WaitForSeconds(0.1f);
         resetFood();
         resetFaith();
         StartCoroutine(react());
+    }
+
+    void UpdateFaithQuantity()
+    {
+        faithQuantity += playersOnBoard.Count;
     }
 
     public void resetFood()
@@ -416,6 +423,7 @@ public class GameManagerScript : MonoBehaviour
 
     public void addTower(TowerScript t)
     {
+        Debug.Log("Ajout d'une tourelle");
         towers.Add(t);
     }
 

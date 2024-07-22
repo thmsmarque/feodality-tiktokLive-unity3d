@@ -145,7 +145,6 @@ public class TowerScript : MonoBehaviour
         {
             Instantiate(towerTemp.prefab, gameObject.GetComponent<Transform>().position, Quaternion.identity, gameObject.transform);
         }
-        gm.addTower(this);
-        gm.updateFaithNeeded();
+       
     }
 }

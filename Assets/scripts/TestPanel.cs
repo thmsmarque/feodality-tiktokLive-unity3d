@@ -13,6 +13,7 @@ public class TestPanel : MonoBehaviour
     public ActivityTemplate[] foodActivities;
     public ActivityTemplate[] materialsActivities;
     public ActivityTemplate[] defenseActivities;
+    public ActivityTemplate[] cultActivies;
     public TourTemplate[] tours; 
     private void Start()
     {
@@ -79,5 +80,10 @@ public class TestPanel : MonoBehaviour
     public void construcTouret()
     {
         gm.GetComponent<BuildScript>().startCoroutinebuildMode(tours[0]);
+    }
+
+    public void construcTotem()
+    {
+        gm.GetComponent<BuildScript>().startCoroutinebuildMode(cultActivies[0]);
     }
 }
