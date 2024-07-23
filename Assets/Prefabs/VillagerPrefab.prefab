@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6677906508719348544}
   - component: {fileID: 7508150981064733373}
   - component: {fileID: 1894715068346633848}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Body
   m_TagString: Villager
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 7866771572901005635}
   - component: {fileID: 7500780674077307545}
   - component: {fileID: 5043074187508834224}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: VillagerPrefab
   m_TagString: Villager
   m_Icon: {fileID: 0}
@@ -158,6 +158,7 @@ MonoBehaviour:
   idPlayer: 0
   numberOfLikes: 0
   isSelected: 0
+  faithCollected: 0
 --- !u!195 &5043074187508834224
 NavMeshAgent:
   m_ObjectHideFlags: 0

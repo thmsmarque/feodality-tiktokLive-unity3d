@@ -15,21 +15,24 @@ public class FaithPassifScript : MonoBehaviour
 
     public float getFaithGenerated()
     {
+        Debug.Log("Activation passif faith");
         return getNumberOfPeople() * temp.faith;
     }
 
     public int getNumberOfPeople()
     {
-        Collider[] villagersDidntCollected;
         int numberOfPeople = 0;
-        foreach(Collider c in getVillagersInTheRange())
+        Collider[] peoples = getVillagersInTheRange();
+        Debug.Log("Nombre de villageois dans la zone :" + peoples.Length);
+        foreach(Collider c in peoples)
         {
-            if(!c.GetComponent<VillagerScript>().faithCollected)
+            if(!c.GetComponentInParent<VillagerScript>().faithCollected)
             {
-                c.GetComponent<VillagerScript>().faithCollected = true;
+                c.GetComponentInParent<VillagerScript>().faithCollected = true;
                 numberOfPeople++;
             }
         }
+        Debug.Log("Villagers not collected : " + numberOfPeople);
         return numberOfPeople;
     }
 
