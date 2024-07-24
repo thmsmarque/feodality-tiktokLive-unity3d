@@ -16,7 +16,6 @@ public class BuildScript : MonoBehaviour
 
     ActivityTemplate actualTemplate;
     TourTemplate tourTemplate;
-    FaithPassifTemplate faithTemplate;
 
     public bool buildModeActivity;
     public bool buildModeTower;
@@ -30,6 +29,11 @@ public class BuildScript : MonoBehaviour
 
     GameManagerScript gm;
 
+    float actionRadius = 0f;
+    public int resolution = 20; // Nombre de points pour la grille
+    public GameObject actionZonePrefab;
+    private GameObject actionZoneInstance;
+
 
     void Start()
     {
@@ -37,7 +41,6 @@ public class BuildScript : MonoBehaviour
         layerToGet = LayerMask.GetMask("Activity");
         layerToGet = ~layerToGet;
         activityLayer = LayerMask.GetMask("Activity");
-
         gm = GetComponent<GameManagerScript>();
 
     }
@@ -48,48 +51,68 @@ public class BuildScript : MonoBehaviour
         if(buildModeActivity)
         {
             handlebuildModeActivity();
+            UpdateActionZone();
+
         }
-        if(buildModeTower)
+        if (buildModeTower)
         {
             handleBuildModeTouret();
+            UpdateActionZone();
         }
-        //if(buildModeFaith)
-        //{
-        //    handleBuildModeFaith();
-        //}
+  
     }
 
-    /*void handleBuildModeFaith()
+
+    void UpdateActionZone()
     {
-        handleLeavingBuildMode();
+        MeshFilter meshFilter = actionZoneInstance.GetComponent<MeshFilter>();
+        Mesh mesh = new Mesh();
+        Vector3[] vertices = new Vector3[resolution * resolution];
+        int[] triangles = new int[(resolution - 1) * (resolution - 1) * 6];
 
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToGet))
+        float step = (actionRadius * 2) / (resolution - 1);
+        int triIndex = 0;
+
+        for (int z = 0; z < resolution; z++)
         {
-            Vector3 elevatedPosition = hit.point;
-            elevatedPosition.y += actualTemplate.elevatedHeight;
-            tempBuild.transform.position = elevatedPosition;
-        }
-        if (checkBuildActivity())
-        {
-            tempBuild.GetComponent<Renderer>().material.color = Color.green;
-            if (Input.GetMouseButtonDown(0))
+            for (int x = 0; x < resolution; x++)
             {
-                Debug.Log("Lancement Construction...");
-                GameObject tempNewActivity = Instantiate(activityPrefab, tempBuild.transform.position, Quaternion.identity, transform);
-                tempNewActivity.GetComponent<ActivityScript>().setActivityTemplate(actualTemplate);
-                gm.addActivity(tempNewActivity.GetComponent<ActivityScript>());
-                gm.removeMaterials(actualTemplate.costInMaterials);
+                float xPos = -actionRadius + x * step;
+                float zPos = -actionRadius + z * step;
+                Vector3 worldPos = tempBuild.transform.position + new Vector3(xPos, 0, zPos);
 
+                if (Physics.Raycast(worldPos + Vector3.up * 50, Vector3.down, out RaycastHit hit))
+                {
+                    vertices[z * resolution + x] = hit.point - tempBuild.transform.position;
+                }
+                else
+                {
+                    vertices[z * resolution + x] = new Vector3(xPos, 0, zPos);
+                }
+
+                if (x < resolution - 1 && z < resolution - 1)
+                {
+                    triangles[triIndex] = z * resolution + x;
+                    triangles[triIndex + 1] = z * resolution + x + 1;
+                    triangles[triIndex + 2] = (z + 1) * resolution + x;
+
+                    triangles[triIndex + 3] = (z + 1) * resolution + x;
+                    triangles[triIndex + 4] = z * resolution + x + 1;
+                    triangles[triIndex + 5] = (z + 1) * resolution + x + 1;
+                    triIndex += 6;
+                }
             }
         }
-        else
-        {
-            tempBuild.GetComponent<Renderer>().material.color = Color.red;
-        }
 
-    }*/
+        mesh.vertices = vertices;
+        mesh.triangles = triangles;
+        mesh.RecalculateNormals();
+
+        meshFilter.mesh = mesh;
+        actionZoneInstance.transform.position = tempBuild.transform.position;
+    }
+
+
 
     void handleBuildModeTouret()
     {
@@ -208,16 +231,6 @@ public class BuildScript : MonoBehaviour
         return true;
     }
 
-    //bool checkBuildPassifFaith()
-    //{
-    //    if (faithTemplate.cost > gm.materials)
-    //    {
-    //        return false;
-    //    }else
-    //    {
-    //        return true;
-    //    }
-    //}
 
     private void OnDrawGizmos()
     {
@@ -232,6 +245,8 @@ public class BuildScript : MonoBehaviour
             buildModeActivity = false;
             buildModeTower = false;
             towerOfDefense = null;
+            Destroy(actionZoneInstance);
+            actionZoneInstance = null;
         }
     }
 
@@ -258,7 +273,12 @@ public class BuildScript : MonoBehaviour
         }
 
         tempBuild = Instantiate(template.prefab, transform);
+        actionZoneInstance = Instantiate(actionZonePrefab, Vector3.zero, Quaternion.identity);
 
+        if (template.isCultActivity())
+        {
+            actionRadius = tempBuild.GetComponentInChildren<FaithPassifScript>().temp.rangeOfAction;
+        }
         buildModeTower = false;
         buildModeActivity = true;
         yield return new WaitWhile(()=>buildModeActivity);
@@ -276,7 +296,9 @@ public class BuildScript : MonoBehaviour
         }
 
         tempBuild = Instantiate(template.prefab, transform);
+        actionZoneInstance = Instantiate(actionZonePrefab, Vector3.zero, Quaternion.identity);
 
+        actionRadius = template.range;
         buildModeActivity = false;
         buildModeTower = true;
         yield return new WaitWhile(() => buildModeTower);

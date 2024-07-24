@@ -3255,6 +3255,8 @@ MonoBehaviour:
   activityLayer:
     serializedVersion: 2
     m_Bits: 0
+  resolution: 20
+  actionZonePrefab: {fileID: 3070697448332252377, guid: d618596924d047e4ab564d6580de7b90, type: 3}
 --- !u!1 &1030883523
 GameObject:
   m_ObjectHideFlags: 0

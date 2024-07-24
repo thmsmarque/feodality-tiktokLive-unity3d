@@ -6,7 +6,7 @@ public class FaithPassifScript : MonoBehaviour
 {
     LayerMask players;
     [SerializeField]
-    FaithPassifTemplate temp;
+    public FaithPassifTemplate temp;
 
     private void Start()
     {
@@ -15,7 +15,7 @@ public class FaithPassifScript : MonoBehaviour
 
     public float getFaithGenerated()
     {
-        Debug.Log("Activation passif faith");
+        //Debug.Log("Activation passif faith");
         return getNumberOfPeople() * temp.faith;
     }
 
@@ -23,7 +23,7 @@ public class FaithPassifScript : MonoBehaviour
     {
         int numberOfPeople = 0;
         Collider[] peoples = getVillagersInTheRange();
-        Debug.Log("Nombre de villageois dans la zone :" + peoples.Length);
+        //Debug.Log("Nombre de villageois dans la zone :" + peoples.Length);
         foreach(Collider c in peoples)
         {
             if(!c.GetComponentInParent<VillagerScript>().faithCollected)
@@ -32,7 +32,7 @@ public class FaithPassifScript : MonoBehaviour
                 numberOfPeople++;
             }
         }
-        Debug.Log("Villagers not collected : " + numberOfPeople);
+        //Debug.Log("Villagers not collected : " + numberOfPeople);
         return numberOfPeople;
     }
 
