@@ -22,6 +22,7 @@ public class BuildScript : MonoBehaviour
     public bool buildModeFaith;
 
     public float radius = 1f;
+    public float angleOfRotation = 5f;
 
     public LayerMask layerToGet;
 
@@ -51,18 +52,31 @@ public class BuildScript : MonoBehaviour
         if(buildModeActivity)
         {
             handlebuildModeActivity();
+            handleRotation();
             UpdateActionZone();
 
         }
         if (buildModeTower)
         {
             handleBuildModeTouret();
+            handleRotation();
             UpdateActionZone();
         }
   
     }
 
-
+    void handleRotation()
+    {
+        Vector3 rot = new Vector3(0, 1, 0);
+        if(Input.GetKey(KeyCode.Q))
+        {
+            tempBuild.transform.Rotate(rot, -angleOfRotation * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            tempBuild.transform.Rotate(rot, angleOfRotation * Time.deltaTime);
+        }
+    }
     void UpdateActionZone()
     {
         MeshFilter meshFilter = actionZoneInstance.GetComponent<MeshFilter>();
@@ -135,7 +149,7 @@ public class BuildScript : MonoBehaviour
             if(Input.GetMouseButtonDown(0))
             {
                 Debug.Log("Lancement Construction tour...");
-                GameObject tempNewActivity = Instantiate(touretPrefab, tempBuild.transform.position, Quaternion.identity, hit.collider.gameObject.transform);
+                GameObject tempNewActivity = Instantiate(touretPrefab, tempBuild.transform.position,Quaternion.identity, hit.collider.gameObject.transform);
                 tempNewActivity.GetComponent<TowerScript>().setTouretTemplate(tourTemplate);
                 towerOfDefense.newTouret(tempNewActivity.GetComponent<TowerScript>());
                 gm.addTower(tempNewActivity.GetComponent<TowerScript>());
@@ -160,14 +174,14 @@ public class BuildScript : MonoBehaviour
                     elevatedPosition.y += actualTemplate.elevatedHeight;
                     tempBuild.transform.position = elevatedPosition;         
             }        
-                if (checkBuildActivity())
+                if (checkBuildActivity(hit.point))
                 {
                     tempBuild.GetComponent<Renderer>().material.color = Color.green;
                     if (Input.GetMouseButtonDown(0))
                     {
                         Debug.Log("Lancement Construction...");
                         GameObject tempNewActivity = Instantiate(activityPrefab, tempBuild.transform.position, Quaternion.identity, transform);
-                        tempNewActivity.GetComponent<ActivityScript>().setActivityTemplate(actualTemplate);
+                        tempNewActivity.GetComponent<ActivityScript>().setActivityTemplate(actualTemplate,tempBuild.transform.rotation);
                         gm.addActivity(tempNewActivity.GetComponent<ActivityScript>());
                         gm.removeMaterials(actualTemplate.costInMaterials);
 
@@ -180,7 +194,7 @@ public class BuildScript : MonoBehaviour
         
     }
 
-    bool checkBuildActivity()
+    bool checkBuildActivity(Vector3 pos)
     {
 
         if(actualTemplate.costInMaterials > gm.materials)
@@ -188,12 +202,8 @@ public class BuildScript : MonoBehaviour
             return false;
         }
 
-        // Origine de la sph�re, souvent la position du joueur ou de l'objet
-        Vector3 origin = tempBuild.transform.position;
 
-        // Utiliser Physics.OverlapSphere pour obtenir tous les colliders dans la sph�re
-        Collider[] hitColliders = Physics.OverlapSphere(origin, radius, activityLayer);
-        // Si la sph�re touche un ou plusieurs colliders, retourner false
+        Collider[] hitColliders = Physics.OverlapSphere(pos, actualTemplate.radiusChecking, activityLayer);
         if (hitColliders.Length > 0)
         {
             foreach (Collider collider in hitColliders)

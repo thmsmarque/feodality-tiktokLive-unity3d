@@ -136,12 +136,12 @@ public class ActivityScript : MonoBehaviour
         return acTemp;
     }
 
-    public void setActivityTemplate(ActivityTemplate ac)
+    public void setActivityTemplate(ActivityTemplate ac, Quaternion rot)
     {
         this.acTemp = ac;
         if (acTemp.prefab != null)
         {
-            GameObject temp = Instantiate(acTemp.prefab, gameObject.GetComponent<Transform>().position, Quaternion.identity, gameObject.transform);
+            GameObject temp = Instantiate(acTemp.prefab, gameObject.GetComponent<Transform>().position, rot, gameObject.transform);
             Transform[] trans = GetComponentsInChildren<Transform>();
             
 

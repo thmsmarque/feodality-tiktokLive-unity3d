@@ -22,6 +22,7 @@ public class ActivityTemplate : ScriptableObject
     public float elevatedHeight = 0f;
 
     public float health;
+    public float radiusChecking;
 
     
 

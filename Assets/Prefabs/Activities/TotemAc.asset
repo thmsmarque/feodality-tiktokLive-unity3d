@@ -21,3 +21,4 @@ MonoBehaviour:
   sizeOfCollider: {x: 0.5, y: 1.5, z: 0.5}
   elevatedHeight: 1
   health: 100
+  radiusChecking: 0.5
