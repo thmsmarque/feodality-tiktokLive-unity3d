@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 [CreateAssetMenu(menuName = "Activity")]
@@ -23,6 +24,8 @@ public class ActivityTemplate : ScriptableObject
 
     public float health;
     public float radiusChecking;
+
+    public Image shopImage;
 
     
 
