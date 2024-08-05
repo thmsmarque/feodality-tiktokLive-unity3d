@@ -10,9 +10,11 @@ public class VillagerScript : MonoBehaviour
 
     NavMeshAgent navMeshAgent;
 
+    public Animator animator;
+
     /// <summary>
     /// How strong he is
-    /// </summary>
+    /// </summary>>
     float strongness = 2f;
     /// <summary>
     /// How efficience he is
@@ -27,6 +29,8 @@ public class VillagerScript : MonoBehaviour
     public bool isSelected;
     public bool faithCollected;
 
+    [SerializeField] private GameObject body;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +38,13 @@ public class VillagerScript : MonoBehaviour
         isSelected = false;
         faithCollected = false;
         navMeshAgent = GetComponent<NavMeshAgent>();
+
+    }
+
+    private void Update()
+    {
+            animator.SetFloat("speedOfWalk",navMeshAgent.velocity.magnitude);
+
     }
 
     public void selectVillager()
@@ -118,5 +129,10 @@ public class VillagerScript : MonoBehaviour
     {
         Debug.Log("Nouvelle destination du villageois");
         navMeshAgent.SetDestination(dest);
+    }
+
+    public void addingToWorld()
+    {
+        body.SetActive(true);
     }
 }

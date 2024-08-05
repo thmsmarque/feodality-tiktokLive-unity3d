@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(menuName = "Tower")]
 public class TourTemplate : ScriptableObject
@@ -13,6 +14,7 @@ public class TourTemplate : ScriptableObject
     public float degatZone;
     public float health;
     public float coastInMaterials;
+    public Image shopImage;
 
     public LayerMask layerTarget; 
 }

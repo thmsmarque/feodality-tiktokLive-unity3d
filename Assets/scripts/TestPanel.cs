@@ -22,7 +22,7 @@ public class TestPanel : MonoBehaviour
     }
     public void apparitionVillager()
     {
-        gm.GetComponent<GameManagerScript>().addPlayerOnBoard("test"+numbVillager, 0000);
+        gm.GetComponent<GameManagerScript>().addPlayerWaiting("test"+numbVillager, 0000);
         numbVillager++;
     }
 

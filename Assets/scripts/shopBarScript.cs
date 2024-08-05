@@ -15,6 +15,8 @@ public class shopBarScript : MonoBehaviour
 
     public Button foodButtonTemplate;
     public Button materialsButtonTemplate;
+    public Button DefenseButtonTemplate;
+    public Button faithButtonTemplate;
 
     public void showFoodBuildings()
     {
@@ -35,6 +37,34 @@ public class shopBarScript : MonoBehaviour
             temp.GetComponent<BuildButtonScript>().setButton(a.shopImage, a.name, a.costInMaterials, a.capacity, a.multiplierEfficacity,a);
         }
     }
+
+    public void showDefenseBuilding()
+    {
+        emptyPanel();
+        foreach(ActivityTemplate a in defenseActivities)
+        {
+            Button temp = Instantiate(DefenseButtonTemplate, panel.transform);
+            temp.GetComponent<BuildButtonScript>().setButton(a.shopImage, a.name, a.costInMaterials, 0, 0, a);
+        }
+        foreach(TourTemplate a in tours)
+        {
+            Button temp = Instantiate(DefenseButtonTemplate, panel.transform);
+            temp.GetComponent<BuildButtonScript>().setButton(a.shopImage, a.name, a.coastInMaterials, a.power, a.faithNeeded, a);
+        }
+    }
+
+    public void showFaithBuilding()
+    {
+        emptyPanel();
+        foreach (ActivityTemplate a in cultActivies)
+        {
+            FaithPassifTemplate f = a.prefab.GetComponent<FaithPassifScript>().temp;
+            Button temp = Instantiate(faithButtonTemplate, panel.transform);
+            temp.GetComponent<BuildButtonScript>().setButton(a.shopImage, a.name, a.costInMaterials,f.rangeOfAction , f.faith, a);
+        }
+     
+    }
+
 
     void emptyPanel()
     {

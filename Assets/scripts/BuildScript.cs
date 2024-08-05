@@ -257,6 +257,7 @@ public class BuildScript : MonoBehaviour
             towerOfDefense = null;
             Destroy(actionZoneInstance);
             actionZoneInstance = null;
+            gm.updateCursor(0);
         }
     }
 
@@ -284,6 +285,7 @@ public class BuildScript : MonoBehaviour
 
         tempBuild = Instantiate(template.prefab, transform);
         actionZoneInstance = Instantiate(actionZonePrefab, Vector3.zero, Quaternion.identity);
+        gm.updateCursor(1);
 
         if (template.isCultActivity())
         {
@@ -304,7 +306,7 @@ public class BuildScript : MonoBehaviour
         {
             Destroy(tempBuild);
         }
-
+        gm.updateCursor(1);
         tempBuild = Instantiate(template.prefab, transform);
         actionZoneInstance = Instantiate(actionZonePrefab, Vector3.zero, Quaternion.identity);
 

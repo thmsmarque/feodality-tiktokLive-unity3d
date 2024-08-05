@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManagerScript : MonoBehaviour
 {
     public List<VillagerScript> playersOnBoard;
+    public List<VillagerScript> playersWaiting;
     public List<ActivityScript> activities;
     public List<VillagerScript> VillagersSelected;
     public List<TowerScript> towers;
@@ -18,6 +19,11 @@ public class GameManagerScript : MonoBehaviour
     public float marginFaith = 0.25f;
     public float multiplierFoodNeededByStrongness = 0.1f;
     public float priorityProportion = 0.6f;
+
+    [SerializeField] private GameObject villagerBar;
+
+    [SerializeField]private Texture2D idle,grabing,construct;
+    
 
     enum FOOD_STATE
     {
@@ -40,7 +46,29 @@ public class GameManagerScript : MonoBehaviour
     {
         playersOnBoard = new List<VillagerScript>();
         activities = new List<ActivityScript>();
+        updateCursor(0);
+        villagerBar = GameObject.Find("Villager_Bar");
         StartCoroutine(react());
+    }
+
+    /// <summary>
+    /// Change the cursor
+    /// </summary>
+    /// <param name="state">0 = idle, 1 = build, 2=grabing</param>
+    public void updateCursor(int state)
+    {
+        switch(state)
+        {
+            case 0:
+                Cursor.SetCursor(idle, Vector2.zero, CursorMode.ForceSoftware);
+                break;
+            case 1:
+                Cursor.SetCursor(construct, Vector2.zero, CursorMode.ForceSoftware);
+                break;
+            case 2: 
+                Cursor.SetCursor(grabing, Vector2.zero, CursorMode.ForceSoftware); 
+                break;
+        }
     }
 
     private void Update()
@@ -263,12 +291,25 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
-    public void addPlayerOnBoard(string name, long id)
+    public void addPlayerWaiting(string name, long id)
     {
         GameObject tempP = Instantiate(playerPrefab,GetComponent<Transform>());
         tempP.GetComponent<VillagerScript>().setName(name);
-        playersOnBoard.Add(tempP.GetComponentInChildren<VillagerScript>());
-        this.updateFoodNeeded();
+        playersWaiting.Add(tempP.GetComponentInChildren<VillagerScript>());
+        villagerBar.GetComponent<VillagerBarScript>().updateVillagers();
+        
+    }
+
+    public void addPlayerOnBoard(VillagerScript vs)
+    {
+        if(playersWaiting.Contains(vs))
+        {
+            playersOnBoard.Add(vs);
+            playersWaiting.Remove(vs);
+            vs.addingToWorld();
+            villagerBar.GetComponent<VillagerBarScript>().updateVillagers();
+            updateFoodNeeded();
+        }
         
     }
 
