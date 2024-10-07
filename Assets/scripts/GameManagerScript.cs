@@ -9,7 +9,7 @@ public class GameManagerScript : MonoBehaviour
     public List<ActivityScript> activities;
     public List<VillagerScript> VillagersSelected;
     public List<TowerScript> towers;
-
+    public HouseScript houseSelected;
     public float foodQuantity;
     public float foodNeeded;
     public float faithQuantity;
@@ -105,18 +105,42 @@ public class GameManagerScript : MonoBehaviour
                        }
                 }else if(hit.collider.gameObject.CompareTag("Activity"))
                 {
-                    if(VillagersSelected.Count > 0)
+                    
+                    if (!hit.collider.gameObject.GetComponent<ActivityScript>().acTemp.isRestingActivity())
                     {
-                        foreach(VillagerScript vi in VillagersSelected)
+                        if (VillagersSelected.Count > 0)
                         {
-                            vi.changeActualActivity(hit.collider.gameObject.GetComponent<ActivityScript>());
-                            
+                            foreach (VillagerScript vi in VillagersSelected)
+                            {
+                                vi.changeActualActivity(hit.collider.gameObject.GetComponent<ActivityScript>());
+
+                            }
+                            for (int i = VillagersSelected.Count - 1; i >= 0; i--)
+                            {
+                                VillagerScript vi = VillagersSelected[i];
+                                VillagersSelected.RemoveAt(i);
+                                vi.deselectVillager();
+                            }
                         }
-                        for (int i = VillagersSelected.Count - 1; i >= 0; i--)
+                    }else
+                    {
+                        Debug.Log("L'activité cliquée est une maison");
+                        if (houseSelected == null)
                         {
-                            VillagerScript vi = VillagersSelected[i];
-                            VillagersSelected.RemoveAt(i);
-                            vi.deselectVillager();
+                            Debug.Log("Maison pas sélec encore");
+
+                            houseSelected = hit.collider.GetComponentInChildren<HouseScript>();
+                        }else
+                        {
+                            Debug.Log("Maison déjà selec");
+
+                            if (houseSelected == hit.collider.gameObject.GetComponentInChildren<HouseScript>())
+                            {
+                                houseSelected = null;
+                            }else
+                            {
+                                houseSelected = hit.collider.gameObject.GetComponentInChildren<HouseScript>();
+                            }
                         }
                     }
                 }else if(hit.collider.gameObject.CompareTag("Floor"))
@@ -302,12 +326,15 @@ public class GameManagerScript : MonoBehaviour
 
     public void addPlayerOnBoard(VillagerScript vs)
     {
-        if(playersWaiting.Contains(vs))
+        if(playersWaiting.Contains(vs) && houseSelected)
         {
+            houseSelected.addVillagerToHouse(vs);
+            vs.gameObject.transform.position = houseSelected.gameObject.GetComponentInChildren<Transform>().position;
             playersOnBoard.Add(vs);
             playersWaiting.Remove(vs);
             vs.addingToWorld();
             villagerBar.GetComponent<VillagerBarScript>().updateVillagers();
+            
             updateFoodNeeded();
         }
         

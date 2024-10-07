@@ -1431,7 +1431,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 300135473}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1904325841}
+        m_TargetAssemblyTypeName: shopBarScript, Assembly-CSharp
+        m_MethodName: showHouseBuilding
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &300135473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4393,6 +4405,7 @@ MonoBehaviour:
   activities: []
   VillagersSelected: []
   towers: []
+  houseSelected: {fileID: 0}
   foodQuantity: 0
   foodNeeded: 0
   faithQuantity: 0
@@ -8461,6 +8474,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0ddc9893dea030a4a8bf91a911b55a85, type: 2}
   cultActivies:
   - {fileID: 11400000, guid: 32e73bc4a7099a745a9dafb247ca386a, type: 2}
+  houses:
+  - {fileID: 11400000, guid: 4983f3887118a0e4e89e4d18d691feff, type: 2}
   tours:
   - {fileID: 11400000, guid: 235c8d1072b82704583699400e60420d, type: 2}
   panel: {fileID: 1215035545}
@@ -8468,6 +8483,7 @@ MonoBehaviour:
   materialsButtonTemplate: {fileID: 9000900344055090908, guid: d770660eaa61516479fd2733339a9d80, type: 3}
   DefenseButtonTemplate: {fileID: 9000900344055090908, guid: 34ef5197dc123fc43a0ed2e92bbca43a, type: 3}
   faithButtonTemplate: {fileID: 9000900344055090908, guid: a75494532dd525b4d964be17618558c8, type: 3}
+  houseButtonTemplate: {fileID: 9000900344055090908, guid: a7a16ac1be8ce074f8c9873c979cfa9e, type: 3}
 --- !u!1 &1908992532
 GameObject:
   m_ObjectHideFlags: 0

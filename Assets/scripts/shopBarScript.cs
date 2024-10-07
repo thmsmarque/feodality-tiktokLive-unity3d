@@ -9,6 +9,7 @@ public class shopBarScript : MonoBehaviour
     public ActivityTemplate[] materialsActivities;
     public ActivityTemplate[] defenseActivities;
     public ActivityTemplate[] cultActivies;
+    public ActivityTemplate[] houses;
     public TourTemplate[] tours;
 
     public GameObject panel;
@@ -17,6 +18,7 @@ public class shopBarScript : MonoBehaviour
     public Button materialsButtonTemplate;
     public Button DefenseButtonTemplate;
     public Button faithButtonTemplate;
+    public Button houseButtonTemplate;
 
     public void showFoodBuildings()
     {
@@ -63,6 +65,16 @@ public class shopBarScript : MonoBehaviour
             temp.GetComponent<BuildButtonScript>().setButton(a.shopImage, a.name, a.costInMaterials,f.rangeOfAction , f.faith, a);
         }
      
+    }
+
+    public void showHouseBuilding()
+    {
+        emptyPanel();
+        foreach (ActivityTemplate a in houses)
+        {
+            Button temp = Instantiate(houseButtonTemplate, panel.transform);
+            temp.GetComponent<BuildButtonScript>().setButton(a.shopImage, a.name, a.costInMaterials, a.capacity, 0, a);
+        }
     }
 
 

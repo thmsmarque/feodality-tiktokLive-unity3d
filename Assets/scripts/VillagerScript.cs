@@ -38,13 +38,11 @@ public class VillagerScript : MonoBehaviour
         isSelected = false;
         faithCollected = false;
         navMeshAgent = GetComponent<NavMeshAgent>();
-
     }
 
     private void Update()
     {
             animator.SetFloat("speedOfWalk",navMeshAgent.velocity.magnitude);
-
     }
 
     public void selectVillager()
